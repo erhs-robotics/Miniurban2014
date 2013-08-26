@@ -21,7 +21,8 @@ public class Road {
 		this.name = name;
 		this.length = length;
 		this.slow = slow;
-		this.circle = circle;		
+		this.circle = circle;
+		if(circle) length *= 2;//CHANGE ME!!!!!!!! 2 IS THE WRONG CONSTANT
 	}
 	
 	public double cost() {

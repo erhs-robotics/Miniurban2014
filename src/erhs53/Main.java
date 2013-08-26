@@ -12,6 +12,7 @@ public class Main {
 		
 		ArrayList<Road> goals = new ArrayList<>();
 		goals.add(Map.B1);
+		goals.add(Map.A3);
 		
 		Path p = Path.getPath(Map.ENTRY, goals);		
 		if(p == null) {
