@@ -59,20 +59,20 @@ public class Path {
 		}
 	}
 	
-	public static Path CFS(Road start, ArrayList<Road> goals) {		
+	public static interface Terminator {
+		public boolean isDone(Path path, ArrayList<State> closed);
+	}
+	
+	public static Path CFS(State start, Terminator t) {		
 		ArrayList<Path> open   = new ArrayList<>();
-		ArrayList<Road> closed = new ArrayList<>();
-		open.add(new Path(new Action(AT.S, start), 0));
+		ArrayList<State> closed = new ArrayList<>();
+		open.add(new Path(new Action(0, start), 0));
 		
-		while(true) {			
-			if(open.size() == 0) break;
-			Path best = min(open);			
-			for(Road g : goals) {
-				if(best.compare(g)) {
-					goals.remove(g);
-					return best;
-				}
-			}
+		while(open.size() != 0) {			
+			Path best = min(open);
+			if(t.isDone(best, closed))
+				return best;
+			
 			open.remove(best);
 			open.addAll(best.successors(closed));
 			closed.add(best.lastRoad());			

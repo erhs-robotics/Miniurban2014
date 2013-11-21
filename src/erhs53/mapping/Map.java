@@ -1,6 +1,16 @@
 package erhs53.mapping;
 
+import erhs53.mapping.search.Action;
+
 public class Map {
+	public static int TL = 1;
+	public static int TR = 2;
+	public static int GS = 3;
+	public static int PL = 4;
+	public static int PR = 5;
+	public static int S = 6;
+	public static int F = 7;
+	
 	public static Road ENTRY = new Road("ENTRY", 0),
 			L = new Road("L", 3),
 			L2 = new Road("L2", 7),
@@ -23,20 +33,20 @@ public class Map {
 			C3 = new Road("C3", 2);
 	
 	public static void buildMap() {
-		ENTRY.setActions(new Action(AT.TL, L));
+		ENTRY.setActions(new Action(TL, L));
 		
-		L.setActions(new Action(AT.TL, L2));
-		L2.setActions(new Action(AT.TL, L3));
-		L3.setActions(new Action(AT.TL, L4), new Action(AT.TR, L3R));
-		L4.setActions(new Action(AT.TL, L5));
-		L5.setActions(new Action(AT.TL, L6));
-		L6 .setActions(new Action(AT.TL, L7), new Action(AT.PL, B1), 
-					  new Action(AT.PL, B2), new Action(AT.PL, B3), new Action(AT.PR, C1),
-					  new Action(AT.PR, C2), new Action(AT.PR, C3));
-		L7.setActions(new Action(AT.F, ENTRY));
-		L3R.setActions(new Action(AT.TL, L3RL));
-		L3RL.setActions(new Action(AT.TL, L3RL2), new Action(AT.PL, A1), 
-						new Action(AT.PL, A2), new Action(AT.PL, A3));
-		L3RL2.setActions(new Action(AT.GS, L6));		
+		L.setActions(new Action(TL, L2));
+		L2.setActions(new Action(TL, L3));
+		L3.setActions(new Action(TL, L4), new Action(TR, L3R));
+		L4.setActions(new Action(TL, L5));
+		L5.setActions(new Action(TL, L6));
+		L6 .setActions(new Action(TL, L7), new Action(PL, B1), 
+					  new Action(PL, B2), new Action(PL, B3), new Action(PR, C1),
+					  new Action(PR, C2), new Action(PR, C3));
+		L7.setActions(new Action(F, ENTRY));
+		L3R.setActions(new Action(TL, L3RL));
+		L3RL.setActions(new Action(TL, L3RL2), new Action(PL, A1), 
+						new Action(PL, A2), new Action(PL, A3));
+		L3RL2.setActions(new Action(GS, L6));		
 	}
 }

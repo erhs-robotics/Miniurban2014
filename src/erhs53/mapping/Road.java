@@ -2,7 +2,12 @@ package erhs53.mapping;
 
 import java.util.ArrayList;
 
-public class Road {
+import erhs53.mapping.search.Action;
+import erhs53.mapping.search.State;
+
+
+
+public class Road extends State {
 	public String name;
 	public double length;
 	public boolean slow, circle;
@@ -34,6 +39,11 @@ public class Road {
 		for(Action a : theActions) {			
 			this.actions.add(a);
 		}		
+	}
+
+	@Override
+	public ArrayList<Action> actions() {
+		return actions;
 	}
 
 }

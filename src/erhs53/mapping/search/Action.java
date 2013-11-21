@@ -1,6 +1,6 @@
 package erhs53.mapping.search;
 
-public abstract class Action {
+public class Action {
 	public int type;
 	public State state;
 	
@@ -8,5 +8,7 @@ public abstract class Action {
 		this.type = type;
 		this.state = state;
 	}
+	
+	
 	
 }
