@@ -7,8 +7,7 @@ import erhs53.mapping.search.State;
 
 
 
-public class Road extends State {
-	public String name;
+public class Road extends State {	
 	public double length;
 	public boolean slow, circle;
 	public ArrayList<Action> actions;
@@ -18,7 +17,8 @@ public class Road extends State {
 		this.name = name;
 		this.length = length;		
 		this.slow = false;
-		this.circle = false;		
+		this.circle = false;
+		this.cost = slow ? length * 2.0 : length;//CHANGE ME!!!!!! 2 is the wrong constant!!!!!!!!!
 	}
 	
 	public Road(String name, double length, boolean slow, boolean circle) {
@@ -28,12 +28,8 @@ public class Road extends State {
 		this.slow = slow;
 		this.circle = circle;
 		if(circle) length *= 2;//CHANGE ME!!!!!!!! 2 IS THE WRONG CONSTANT
-	}
+	}	
 	
-	public double cost() {
-		return slow ? length * 2.0 : length;//CHANGE ME!!!!!! 2 is the wrong constant!!!!!!!!!
-	}
-
 	public void setActions(Action... theActions) {
 		this.actions = new ArrayList<Action>();
 		for(Action a : theActions) {			
