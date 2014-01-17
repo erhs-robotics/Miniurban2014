@@ -39,7 +39,7 @@ public class Map {
 	/** GOAL LIST *****************************************************************/
 	// Every goal in the map
 	public static Goal G1, G2, G3, START, END;
-	
+	public static int goalNum = 4;
 	/*****************************************************************************/
 	
 	/** MAP Generator ************************************************************/
@@ -82,6 +82,7 @@ public class Map {
 	 * 
 	 */
 	public static void buildGoalMap(Goal... goals) {
+		goalNum = goals.length;
 		ArrayList<Action> actions = new ArrayList<>();
 		for(Goal g : goals) {
 			actions.add(a(0, g));

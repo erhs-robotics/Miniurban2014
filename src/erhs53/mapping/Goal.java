@@ -77,7 +77,7 @@ public class Goal extends State {
 	 */
 	public ArrayList<Action> actions(Path path) {
 		//if all goals have been visited, append Map.END to the list of options
-		if(path.length() >= 4) {
+		if(path.length() >= Map.goalNum + 1) {
 			@SuppressWarnings("unchecked")
 			ArrayList<Action> newActions = (ArrayList<Action>) actions.clone();
 			newActions.add(new Action(0, Map.END));
