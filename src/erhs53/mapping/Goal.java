@@ -8,7 +8,7 @@ import erhs53.mapping.search.Path;
 import erhs53.mapping.search.State;
 
 public class Goal extends State {
-	public int space;
+	public int space, dir;
 	public Road road;
 	public static HashMap<Goal, HashMap<Goal, Double>> COST;
 	public ArrayList<Action> actions;
@@ -51,6 +51,11 @@ public class Goal extends State {
 	
 	public double cost(Goal g) {
 		return COST.get(this).get(g);
+	}
+	
+	public void set(int space, int dir) {
+		this.space = space;
+		this.dir = dir;
 	}
 	
 	public ArrayList<Action> actions(Path path) {

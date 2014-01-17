@@ -3,6 +3,7 @@ package erhs53.mapping;
 import java.util.ArrayList;
 
 import erhs53.mapping.search.Action;
+import erhs53.mapping.search.Path;
 import erhs53.mapping.search.State;
 /*         G2
  *        > >
@@ -77,6 +78,21 @@ public class Map {
 			_actions.remove(g);			
 			g.actions = _actions;
 		}
+	}
+	
+	public static Path generatePath(Goal... goals) {
+		Path path = new Path();
+		buildGoalMap(goals);
+		Path goalPath = Path.CFS(START, END);
+		for(int i=0;i<goalPath.length()-1;i++) {
+			Goal g1 = (Goal)goalPath.get(i).state;
+			Goal g2 = (Goal)goalPath.get(i+1).state;
+			Path pathPart = Path.CFS(g1.road, g2.road);
+			path.addPath(pathPart);
+			path.add(new Action(g2.dir, g2));			
+		}
+		
+		return path;
 	}
 	
 }

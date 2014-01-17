@@ -7,12 +7,12 @@ import erhs53.mapping.search.Path;
 public class Main {
 	
 	public static void main(String[] args) {	
-		Map.G1.space = 1;
-		Map.G2.space = 2;
-		Map.G3.space = 3;
-		Map.buildGoalMap(Map.G1, Map.G2, Map.G3);
+		Map.G1.set(1, Map.PR);
+		Map.G2.set(1, Map.PL);
+		Map.G3.set(1, Map.PR);
+		//Map.buildGoalMap(Map.G1, Map.G2, Map.G3);
 		
-		Path p = Path.CFS(Map.START, Map.END);		
+		Path p = Map.generatePath(Map.G1, Map.G2, Map.G3);		
 		if(p == null) {
 			System.out.println("Failed");
 			return;
