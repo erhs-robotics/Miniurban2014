@@ -18,28 +18,32 @@ import erhs53.mapping.search.State;
 
 
 public class Map {
-	public static int TL = 1;
-	public static int TR = 2;
-	public static int GS = 3;
-	public static int PL = 4;
-	public static int PR = 5;
-	public static int S = 6;
-	public static int F = 7;
+	// Types of actions
+	public static int TL = 1; // Turn Left
+	public static int TR = 2; // Turn Right
+	public static int GS = 3; // Go Straight
+	public static int PL = 4; // Park Left
+	public static int PR = 5; // Park Right
+	public static int S = 6;  // Start
+	public static int F = 7;  // Finish
 
+	/** ROAD LIST *****************************************************************/
+	// Every road in the map
 	public static Road V1 = new Road("V1", 1), V2 = new Road("V2", 1),
 			V3 = new Road("V3", 1), V4 = new Road("V4", 1), V5 = new Road("V5", 1),
 			H1 = new Road("H1", 1), H2 = new Road("H2", 1), H3 = new Road("H3", 1), 
 			H4 = new Road("H4", 1), H5 = new Road("H5", 1);
 	
-	public static Goal G1, G2, 
-					   G3, 
-					   START, END;
-	public static Goal[] goals = {G1, G2, G3};
-
-	private static Action a(int id, State r) {
-		return new Action(id, r);
-	}
+	/*****************************************************************************/
 	
+	/** GOAL LIST *****************************************************************/
+	// Every goal in the map
+	public static Goal G1, G2, G3, START, END;
+	
+	/*****************************************************************************/
+	
+	/** MAP Generator ************************************************************/
+	// Sets the actions available in each road
 	static {
 		V1.setActions(a(TR, H1));
 		V2.setActions(a(TL, H2));
@@ -61,6 +65,18 @@ public class Map {
 		
 	}
 	
+	/*****************************************************************************/
+	
+	/**
+	 * Convenience function that creates a new Action object
+	 * @param id
+	 * @param r
+	 * @return
+	 */
+	private static Action a(int id, State r) {
+		return new Action(id, r);
+	}
+	
 	/**
 	 * Defines every action you can take at each goal
 	 * 
@@ -80,16 +96,24 @@ public class Map {
 		}
 	}
 	
+	/**
+	 * Used to generate the actual path followed that will visit each goal.
+	 * First examines the optimal order in which to visit goals, then finds each
+	 * path for the goals and concatenates the separate paths together.
+	 * @param goals The goals we need to visit
+	 * @return The optimal path from the start, to each goal, and back again
+	 */
 	public static Path generatePath(Goal... goals) {
-		Path path = new Path();
-		buildGoalMap(goals);
-		Path goalPath = Path.CFS(START, END);
+		Path path = new Path(); // Will store the final path
+		buildGoalMap(goals); // Define the actions available for each goal
+		Path goalPath = Path.CFS(START, END); // Find the optimal order to visit goals
+		// For each goal, find the path to the next goal
 		for(int i=0;i<goalPath.length()-1;i++) {
-			Goal g1 = (Goal)goalPath.get(i).state;
-			Goal g2 = (Goal)goalPath.get(i+1).state;
-			Path pathPart = Path.CFS(g1.road, g2.road);
-			path.addPath(pathPart);
-			path.add(new Action(g2.dir, g2));			
+			Goal g1 = (Goal)goalPath.get(i).state; // The goal we start from
+			Goal g2 = (Goal)goalPath.get(i+1).state; // The goal we end on
+			Path pathPart = Path.CFS(g1.road, g2.road); // Generate the path from g1 to g2
+			path.addPath(pathPart); // Append the path to our final path
+			path.add(new Action(g2.dir, g2)); // Add the direction to park			
 		}
 		
 		return path;
