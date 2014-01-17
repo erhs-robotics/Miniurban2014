@@ -21,14 +21,24 @@ public class Path {
 		actions.addAll(a);
 		this.cost = cost;
 	}
+	
+	public double length() { return actions.size(); }
 	public void addPath(Path path) { this.actions.addAll(path.actions); }
 	
 	public void add(Action a) {	actions.add(a); }
 	
-	public ArrayList<Path> successors(ArrayList<State> exclude) {
+	public boolean contains(State state) {
+		for(Action a : actions) {
+			if(a.state.name.equals(state.name))
+				return true;
+		}		
+		return false;
+	}
+	
+	public ArrayList<Path> successors() {
 		ArrayList<Path> paths = new ArrayList<>();		
-		for(Action a : lastRoad().actions()) {
-			if(!exclude.contains(a.state)) {
+		for(Action a : lastState().actions(this)) {
+			if(!this.contains(a.state)) {
 				Path p = new Path(actions, cost + a.state.cost);
 				p.add(a);
 				paths.add(p);
@@ -38,10 +48,10 @@ public class Path {
 	}
 	
 	public boolean compare(State road) {
-		return road.name.equals(lastRoad().name);
+		return road.name.equals(lastState().name);
 	}
 	
-	public State lastRoad() {
+	public State lastState() {
 		return actions.get(actions.size() - 1).state;		
 	}
 	
@@ -59,24 +69,22 @@ public class Path {
 		}
 	}
 	
-	public static interface Terminator {
-		public boolean isDone(Path path, ArrayList<State> closed);
-	}
-	
-	public static Path CFS(State start, Terminator t) {		
-		ArrayList<Path> open   = new ArrayList<>();
-		ArrayList<State> closed = new ArrayList<>();
+	public static Path CFS(State start, State end) {		
+		ArrayList<Path> open = new ArrayList<>();		
 		open.add(new Path(new Action(0, start), 0));
 		
 		while(open.size() != 0) {			
 			Path best = min(open);
-			if(t.isDone(best, closed))
+			if(best.compare(end))
 				return best;
 			
 			open.remove(best);
-			open.addAll(best.successors(closed));
-			closed.add(best.lastRoad());			
+			open.addAll(best.successors());
+					
 		}		
 		return null;
 	}
+	
+	
+	
 }

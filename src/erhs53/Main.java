@@ -1,31 +1,23 @@
 package erhs53;
 
-import java.util.ArrayList;
-
 import erhs53.mapping.Map;
 import erhs53.mapping.search.Path;
-import erhs53.mapping.search.State;
-import erhs53.mapping.search.Path.Terminator;
-import erhs53.mapping.Road;
+
 
 public class Main {
 	
-	public static void main(String[] args) {
-		Map.buildMap();		
+	public static void main(String[] args) {	
+		Map.G1.space = 1;
+		Map.G2.space = 2;
+		Map.G3.space = 3;
+		Map.buildGoalMap(Map.G1, Map.G2, Map.G3);
 		
-		Terminator term = new Terminator() {			
-			@Override
-			public boolean isDone(Path path, ArrayList<State> closed) {
-				return path.lastRoad() == Map.B1;
-			}
-		};
-		
-		Path p = Path.CFS(Map.ENTRY, term);		
+		Path p = Path.CFS(Map.START, Map.END);		
 		if(p == null) {
 			System.out.println("Failed");
 			return;
 		}
-		System.out.println(p.actions.get(0).type);
+		
 		p.print();
 	}
 	
