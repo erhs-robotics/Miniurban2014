@@ -12,6 +12,7 @@ import erhs53.mapping.search.State;
 public class Road extends State {	
 	public double length;
 	public boolean slow, circle;
+	public double cost;
 	private ArrayList<Action> actions;
 	
 	
@@ -42,6 +43,10 @@ public class Road extends State {
 	
 	public ArrayList<Action> actions(Path path) {
 		return actions;
+	}
+	
+	public double cost(State s) {
+		return ((Road) s).cost;
 	}
 
 }

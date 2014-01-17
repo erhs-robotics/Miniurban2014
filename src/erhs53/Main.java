@@ -9,8 +9,7 @@ public class Main {
 	public static void main(String[] args) {	
 		Map.G1.set(1, Map.PR);
 		Map.G2.set(1, Map.PL);
-		Map.G3.set(1, Map.PR);
-		//Map.buildGoalMap(Map.G1, Map.G2, Map.G3);
+		Map.G3.set(1, Map.PR);		
 		
 		Path p = Map.generatePath(Map.G1, Map.G2, Map.G3);		
 		if(p == null) {
