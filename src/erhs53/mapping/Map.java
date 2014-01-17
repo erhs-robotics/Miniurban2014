@@ -77,6 +77,7 @@ public class Map {
 		}
 		
 		for(Goal g : goals) {
+			@SuppressWarnings("unchecked")
 			ArrayList<Action> _actions = (ArrayList<Action>) actions.clone();
 			_actions.remove(g);			
 			g.actions = _actions;
