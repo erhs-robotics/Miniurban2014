@@ -58,12 +58,6 @@ public class Map {
 		START = new Goal("START", Map.V2, 0);
 		END = new Goal("END", Map.V2, 0);
 		
-		ArrayList<Action> actions = new ArrayList<>();
-		actions.add(new Action(0, G1));
-		actions.add(new Action(0, G2));
-		actions.add(new Action(0, G3));
-		START.actions = actions;
-		
 	}
 	
 	/**
@@ -75,6 +69,7 @@ public class Map {
 		for(Goal g : goals) {
 			actions.add(a(0, g));
 		}
+		START.actions = actions;
 		
 		for(Goal g : goals) {
 			@SuppressWarnings("unchecked")
