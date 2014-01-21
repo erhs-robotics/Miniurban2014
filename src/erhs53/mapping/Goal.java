@@ -20,24 +20,24 @@ public class Goal extends State {
 		// For each goal, store the cost of traveling to each other goal
 		HashMap<String, Double> G1 = new HashMap<>();
 		G1.put("G2", 4.0);
-		G1.put("G3", 6.0);		
+		G1.put("G3", 6.0);
 		G1.put("END", 9.0);
-		
+
 		HashMap<String, Double> G2 = new HashMap<>();
 		G2.put("G1", 6.0);
-		G2.put("G3", 2.0);		
+		G2.put("G3", 2.0);
 		G2.put("END", 5.0);
-		
+
 		HashMap<String, Double> G3 = new HashMap<>();
 		G3.put("G1", 4.0);
-		G3.put("G2", 4.0);		
+		G3.put("G2", 4.0);
 		G3.put("END", 3.0);
-		
+
 		HashMap<String, Double> START = new HashMap<>();
 		START.put("G1", 2.0);
 		START.put("G2", 6.0);
 		START.put("G3", 8.0);
-		
+
 		COST = new HashMap<>();
 		COST.put("G1", G1);
 		COST.put("G2", G2);

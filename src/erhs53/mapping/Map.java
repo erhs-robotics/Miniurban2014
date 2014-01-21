@@ -1,6 +1,7 @@
 package erhs53.mapping;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import erhs53.mapping.search.Action;
 import erhs53.mapping.search.Path;
@@ -30,8 +31,8 @@ public class Map {
 	/** ROAD LIST *****************************************************************/
 	// Every road in the map
 	public static Road V1 = new Road("V1", 1), V2 = new Road("V2", 1),
-			V3 = new Road("V3", 1), V4 = new Road("V4", 1), V5 = new Road("V5", 1),
-			H1 = new Road("H1", 1), H2 = new Road("H2", 1), H3 = new Road("H3", 1), 
+			V3 = new Road("V3", 1), V4 = new Road("V4", 1), V5 = new Road("V5", 2),
+			H1 = new Road("H1", 2), H2 = new Road("H2", 1), H3 = new Road("H3", 1), 
 			H4 = new Road("H4", 1), H5 = new Road("H5", 1);
 	
 	/*****************************************************************************/
@@ -118,6 +119,40 @@ public class Map {
 		}
 		
 		return path;
+	}
+	
+	public static String generateCosts(Goal... goals) {
+		String declaration = "HashMap<String, Double> %s = new HashMap<>();\n";
+		String keyValue = "%s.put(\"%s\", %s);\n";
+		String result = "";
+		for(Goal start : goals) {
+			result += String.format(declaration, start.name);
+			for(Goal end : goals) {
+				if(start == end) continue;				
+				Path p = Path.CFS(start.road, end.road);
+				result += String.format(keyValue, start.name, end.name, p.cost);				
+			}
+			// Also find cost to finish
+			Path p = Path.CFS(start.road, END.road);
+			result += String.format(keyValue, start.name, END.name, p.cost);
+			result += "\n";
+		}
+		// Also find the cost from start to each goal
+		result += String.format(declaration, START.name);
+		for(Goal end : goals) {
+			Path p = Path.CFS(START.road, end.road);
+			result += String.format(keyValue, START.name, end.name, p.cost);
+		}
+		// Finish up by appending all new hashmaps to the master map
+		result += "\nCOST = new HashMap<>();\n";
+		for(Goal g : goals) {
+			result += String.format(keyValue, "COST", g.name, g.name);
+		}
+		// Don't forget the start
+		result += String.format(keyValue, "COST", START.name, START.name);		
+		
+		
+		return result;
 	}
 	
 }
