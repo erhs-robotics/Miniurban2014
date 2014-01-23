@@ -1,26 +1,26 @@
 package erhs53;
 
-import java.util.ArrayList;
 import erhs53.mapping.Map;
-import erhs53.mapping.Path;
-import erhs53.mapping.Road;
+import erhs53.mapping.search.Path;
+
 
 public class Main {
 	
 	public static void main(String[] args) {
-		Map.buildMap();		
 		
-		ArrayList<Road> goals = new ArrayList<>();
-		goals.add(Map.B1);
-		goals.add(Map.A3);
+		Map.G1.set(1, Map.PR);
+		Map.G2.set(1, Map.PL);
+		Map.G3.set(1, Map.PR);		
 		
-		Path p = Path.getPath(Map.ENTRY, goals);		
+		Path p = Map.generatePath(Map.G1, Map.G2, Map.G3);		
 		if(p == null) {
 			System.out.println("Failed");
 			return;
 		}
-		System.out.println(p.actions.get(0).type);
+		
 		p.print();
+		
+		//System.out.println(Map.generateCosts(Map.G1, Map.G2, Map.G3));
 	}
 	
 }
