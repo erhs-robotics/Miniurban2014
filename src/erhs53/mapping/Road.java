@@ -32,16 +32,11 @@ public class Road extends State {
 	}
 	
 	public Road(String name, double length, boolean slow, boolean circle) {
-		this.actions = new ArrayList<>();
+//		this(name, length, slow, circle);
 		this.name = name;
 		this.length = length;
 		this.slow = slow;
 		this.circle = circle;
-		// Make circles extra expensive because traveling them is risky
-		if(circle) length *= 2;//CHANGE ME!!!!!!!! 2 IS THE WRONG CONSTANT
-	}
-	public Road(String name, double length, boolean slow, boolean circle) {
-		this(name, length, slow, circle);
 		this.cost = slow ? length * 2.0 : length;//CHANGE ME!!!!!! 2 is the wrong constant!!!!!!!!!
 	}
 	

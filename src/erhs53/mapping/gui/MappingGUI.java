@@ -13,9 +13,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import erhs53.mapping.Action;
-import erhs53.mapping.Path;
-
 public class MappingGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -83,14 +80,6 @@ public class MappingGUI extends JFrame {
 		this.setLayout(new BorderLayout());
 		this.add(controlPanel, BorderLayout.SOUTH);
 		this.add(imagePanel, BorderLayout.NORTH);
-	}
-	
-	public void sketchPath(Path path) {
-		Graphics g = screenImage.getGraphics();
-		g.drawImage(mapImage, 0, 0, null);
-		for(Action a : path.actions) {
-			g.drawLine(a.road.startPos.x, a.road.startPos.y, a.road.endPos.x, a.road.endPos.y);
-		}
 	}
 	
 	public static void main(String[] args) {
