@@ -84,6 +84,8 @@ public class Map {
 					   BH10 = new Road("BH10", 150),
 					   BH11 = new Road("BH11", 180),
 					   BH12 = new Road("BH12", 165),
+					   BC0 = new Road("BC0", 165), //measure actual dist
+					   BC1 = new Road("BC1", 60), //^
 							 
 					   CV0 = new Road("CV0", 50),
 					   CV1 = new Road("CV1", 50),
@@ -131,11 +133,11 @@ public class Map {
 		H4.setActions(a(TR, V5));
 		H5.setActions(a(GS, H3), a(TR, V4));
 		
-		G1 = new Goal("G1", Map.V1, 0);
-		G2 = new Goal("G2", Map.H4, 0);
-		G3 = new Goal("G3", Map.V5, 0); 
-		START = new Goal("START", Map.V2, 0);
-		END = new Goal("END", Map.V2, 0);*/
+		G1 = new Goal("G1", Map.V1);
+		G2 = new Goal("G2", Map.H4);
+		G3 = new Goal("G3", Map.V5); 
+		START = new Goal("START", Map.V2);
+		END = new Goal("END", Map.V2);*/
 		
 		//Section A
 		AH0.setActions(a(TL, AV1));
@@ -163,8 +165,62 @@ public class Map {
 		BH1.setActions(a(GS, BH0), a(TL, BV1));
 		BH2.setActions(a(TL, BV0), a(GS, BH3));
 		BH3.setActions(a(TR, BV5), a(GS, BH4));
+		BH4.setActions(a(GS, CH2), a(TR, BV6));
+		BH5.setActions(a(GS, AH3), a(TL, AV7));
+		BH6.setActions(a(GS, BH5), a(TR, BV4));
+		BH7.setActions(a(TR, BC0));
+		BH8.setActions(a(GS, BH9), a(TL, BV7));
+		BH9.setActions(a(GS, BH10), a(TR, BV1));
+		BH10.setActions(a(GS, CH6), a(TR, BV13));
+		BH11.setActions(a(GS, BH12), a(TL, BV12));
+		BH12.setActions(a(GS, CH11), a(TL, CV7));
+		BV0.setActions(a(TL, BH0));
+		BV1.setActions(a(GS, BV5), a(TL, BH4));
+		BV3.setActions(a(GS, BV6), a(TL, CH2));
+		BV4.setActions(a(GS, BV0), a(TR, BH3));
+		BV5.setActions(a(TR, BC0));
+		BV6.setActions(a(GS, BV9), a(TR, BH7));
+		BV7.setActions(a(GS, BV4), a(TL, BH5));
+		BV8.setActions(a(GS, BV11), a(TL, BH10));
+		BV9.setActions(a(GS, BV13), a(TL, CH6));
+		BV10.setActions(a(GS, BV7), a(TR, BH9));
+		BV11.setActions(a(TL, BH11));
+		BV12.setActions(a(TR, BH10));
+		BV13.setActions(a(TL, BH12));
+		BC0.setActions(a(GS, BC1), a(TR, BH6));
+		BC1.setActions(a(GS, BC0), a(TR, BV8));
+		//Section C
+		CH0.setActions(a(GS, BH1), a(TL, BV3));
+		CH1.setActions(a(GS, CH0), a(TL, CV0));
+		CH2.setActions(a(GS, CH3), a(TR, CV3));
+		CH3.setActions(a(TL, CV1));
+		CH4.setActions(a(GS, BH7), a(TL, BV9));
+		CH6.setActions(a(GS, CH7), a(TL, CV5));
+		CH7.setActions(a(GS, CH8), a(TR, CV8));
+		CH8.setActions(a(GS, CH9), a(TL, CV4));
+		CH9.setActions(a(TL, CV2));
+		CH11.setActions(a(GS, CH12), a(TL, CV9));
+		CH12.setActions(a(TL, CV10));
+		CV0.setActions(a(GS, CV3), a(TL, CH3));
+		CV1.setActions(a(TL, CH1));
+		CV2.setActions(a(TL, CH1));
+		CV3.setActions(a(GS, CV8), a(TL, CH8));
+		CV4.setActions(a(GS, CV1));
+		CV5.setActions(a(TL, CH4));
+		CV7.setActions(a(GS, CV5), a(TR, CH7));
+		CV8.setActions(a(TL, CH11));
+		CV9.setActions(a(GS, CV4), a(TR, CH9));
+		CV10.setActions(a(GS, CV2));
 		
-		
+		Goal G1 = new Goal("G1", Map.AV5);
+		Goal G2 = new Goal("G2", Map.AH2);
+		Goal G3 = new Goal("G3", Map.AH4);
+		Goal G4 = new Goal("G4", Map.AV6);
+		Goal G5 = new Goal("G5", Map.BV6);
+		Goal G6 = new Goal("G6", Map.CH6);
+		Goal G7 = new Goal("G7", Map.CV3);
+		Goal G8 = new Goal("G8", Map.CH3);
+		Goal G9 = new Goal("G9", Map.CV2);
 		
 	}
 	

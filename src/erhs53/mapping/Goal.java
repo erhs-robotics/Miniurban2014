@@ -46,10 +46,10 @@ public class Goal extends State {
 	}
 	
 
-	public Goal(String name, Road road, int space) {
+	public Goal(String name, Road road) {
 		this.name = name;
 		this.road = road;
-		this.space = space;		
+				
 	}
 	
 	/**
