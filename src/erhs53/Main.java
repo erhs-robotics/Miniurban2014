@@ -10,9 +10,9 @@ public class Main {
 		
 		Map.G1.set(1, Map.PR);
 		Map.G2.set(1, Map.PL);
-		Map.G3.set(1, Map.PR);		
+		Map.G9.set(1, Map.PR);		
 		
-		Path p = Map.generatePath(Map.G1, Map.G2, Map.G3);		
+		Path p = Map.generatePath(Map.G1, Map.G2, Map.G9);		
 		if(p == null) {
 			System.out.println("Failed");
 			return;
@@ -20,7 +20,8 @@ public class Main {
 		
 		p.print();
 		
-		//System.out.println(Map.generateCosts(Map.G1, Map.G2, Map.G3));
+		
+		//System.out.println(Map.generateCosts(Map.G1, Map.G2, Map.G3, Map.G4, Map.G5, Map.G6, Map.G7, Map.G8, Map.G9));
 	}
 	
 }

@@ -114,7 +114,17 @@ public class Map {
 	
 	/** GOAL LIST *****************************************************************/
 	// Every goal in the map
-	public static Goal G1, G2, G3, START, END;
+	public static Goal START = new Goal("START", Map.AH0);
+	public static Goal END = new Goal("END", Map.AH0);
+	public static Goal G1 = new Goal("G1", Map.AH5);
+	public static Goal G2 = new Goal("G2", Map.AH2);
+	public static Goal G3 = new Goal("G3", Map.AH4);
+	public static Goal G4 = new Goal("G4", Map.AV6);
+	public static Goal G5 = new Goal("G5", Map.BV6);
+	public static Goal G6 = new Goal("G6", Map.CH6);
+	public static Goal G7 = new Goal("G7", Map.CV3);
+	public static Goal G8 = new Goal("G8", Map.CH3);
+	public static Goal G9 = new Goal("G9", Map.CV2);
 	public static int goalNum = 4;
 	/*****************************************************************************/
 	
@@ -154,6 +164,7 @@ public class Map {
 		AV3.setActions(a(TL, AC3B));
 		AV4.setActions(a(TL, AH4));
 		AV5.setActions(a(GS, AV6), a(TL, BH2));
+		AV6.setActions(a(GS, AV7), a(TR, AH3));
 		AV7.setActions(a(GS, AV8), a(TL, BH8));
 		AV8.setActions(a(TL, AH8));
 		AC0.setActions(a(GS, AV1));
@@ -211,16 +222,6 @@ public class Map {
 		CV8.setActions(a(TL, CH11));
 		CV9.setActions(a(GS, CV4), a(TR, CH9));
 		CV10.setActions(a(GS, CV2));
-		
-		Goal G1 = new Goal("G1", Map.AV5);
-		Goal G2 = new Goal("G2", Map.AH2);
-		Goal G3 = new Goal("G3", Map.AH4);
-		Goal G4 = new Goal("G4", Map.AV6);
-		Goal G5 = new Goal("G5", Map.BV6);
-		Goal G6 = new Goal("G6", Map.CH6);
-		Goal G7 = new Goal("G7", Map.CV3);
-		Goal G8 = new Goal("G8", Map.CH3);
-		Goal G9 = new Goal("G9", Map.CV2);
 		
 	}
 	
@@ -284,6 +285,7 @@ public class Map {
 		String keyValue = "%s.put(\"%s\", %s);\n";
 		String result = "";
 		for(Goal start : goals) {
+			System.out.println(start.name);
 			result += String.format(declaration, start.name);
 			for(Goal end : goals) {
 				if(start == end) continue;				
