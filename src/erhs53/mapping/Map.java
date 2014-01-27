@@ -150,7 +150,7 @@ public class Map {
 		END = new Goal("END", Map.V2);*/
 		
 		//Section A
-		AH0.setActions(a(TL, AV1));
+		AH0.setActions(a(TL, AV0));
 		AH1.setActions(a(TL, AV1), a(GS, AH0));
 		AH2.setActions(a(GS, BH2), a(TR, AV6));
 		AH3.setActions(a(TL, AV4));
@@ -181,7 +181,7 @@ public class Map {
 		BH6.setActions(a(GS, BH5), a(TR, BV4));
 		BH7.setActions(a(TR, BC0));
 		BH8.setActions(a(GS, BH9), a(TL, BV7));
-		BH9.setActions(a(GS, BH10), a(TR, BV1));
+		BH9.setActions(a(GS, BH10), a(TR, BV11));
 		BH10.setActions(a(GS, CH6), a(TR, BV13));
 		BH11.setActions(a(GS, BH12), a(TL, BV12));
 		BH12.setActions(a(GS, CH11), a(TL, CV7));
