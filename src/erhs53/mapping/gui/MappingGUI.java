@@ -219,7 +219,7 @@ public class MappingGUI extends JFrame {
 		screenImage.getGraphics().drawImage(mapImage, 0, 0, null);
 		for(Action a : path.actions) {
 			System.out.print(a.state.name + ",");
-			if(a.state.name.startsWith("G")) {
+			if(a.state.name.startsWith("G") || a.state.name.equals("END")) {
 				colorIndex++;
 				screenImage.getGraphics().setColor(colors[colorIndex]);
 				continue;
@@ -228,7 +228,10 @@ public class MappingGUI extends JFrame {
 			Graphics2D g = (Graphics2D) screenImage.getGraphics();
 			g.setColor(colors[colorIndex]);
 			g.setStroke(new BasicStroke(3));
-			g.drawLine(rpos.startPos.x, rpos.startPos.y, rpos.endPos.x, rpos.endPos.y);
+			if(rpos == null) System.out.println("\nrpos is null");
+			for(int i=1; i<rpos.points.length; i++) {
+				g.drawLine(rpos.points[i-1].x, rpos.points[i-1].y, rpos.points[i].x, rpos.points[i-1].y);
+			}
 		}
 		System.out.println("Done");
 	}

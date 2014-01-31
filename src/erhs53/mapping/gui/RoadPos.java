@@ -10,18 +10,23 @@ public class RoadPos {
 	static int HORIZ = 0;
 	static int VERT = 1;
 	
-	public Point startPos, endPos;
-	public boolean circle = false;
 	
-	public RoadPos(Point startPos, Point endPos) {
+	public boolean circle = false;
+	public Point[] points;
+	
+	/*public RoadPos(Point startPos, Point endPos) {
 		this.startPos = startPos;
 		this.endPos = endPos;
+	}*/
+	
+	public RoadPos(Point... points) {
+		this.points = points;
 	}
 	
-	public RoadPos(Point startPos, Point endPos, boolean circle) {
+	/*public RoadPos(Point startPos, Point endPos, boolean circle) {
 		this(startPos, endPos);
 		this.circle = circle;
-	}
+	}*/
 	
 	public RoadPos() {}
 	
@@ -46,10 +51,10 @@ public class RoadPos {
 					      AV6 = new RoadPos(new Point(500, 65), new Point(500, 155)),
 					      AV7 = new RoadPos(new Point(500, 155), new Point(500, 230)),
 					      AV8 = new RoadPos(new Point(500, 230), new Point(500, 300)),
-			              AC0 = new RoadPos(new Point(250, 65), new Point(320, 65), true),
-			              AC1 = new RoadPos(new Point(250, 120), new Point(320, 65), true),
-			              AC2 = new RoadPos(new Point(180, 300), new Point(242, 255), true),
-			             AC3B = new RoadPos(new Point(242, 255), new Point(300, 300), true),
+			              AC0 = new RoadPos(new Point(250, 65), new Point(320, 65)),
+			              AC1 = new RoadPos(new Point(250, 120), new Point(320, 65)),
+			              AC2 = new RoadPos(new Point(180, 300), new Point(242, 255)),
+			             AC3B = new RoadPos(new Point(242, 255), new Point(300, 300)),
 			
 			              BH0 = new RoadPos(new Point(500, 20), new Point(715, 20)),
 			              BH1 = new RoadPos(new Point(715, 20), new Point(863, 20)),
@@ -78,8 +83,8 @@ public class RoadPos {
 	                     BV11 = new RoadPos(new Point(715, 230), new Point(715, 300)),
 	                     BV12 = new RoadPos(new Point(785, 230), new Point(785, 300)),
 	                     BV13 = new RoadPos(new Point(863, 230), new Point(863, 300)),
-	                      BC0 = new RoadPos(new Point(715, 200), new Point(673, 155), true),
-	                      BC1 = new RoadPos(new Point(673, 155), new Point(715, 200), true),
+	                      BC0 = new RoadPos(new Point(715, 200), new Point(673, 155)),
+	                      BC1 = new RoadPos(new Point(673, 155), new Point(715, 200)),
 	
 	                      CH0 = new RoadPos(new Point(715, 20), new Point(1024, 20)),
 	                      CH1 = new RoadPos(new Point(1024, 20), new Point(1228, 20)),
