@@ -2,7 +2,6 @@ package erhs53.mapping;
 
 import java.awt.Point;
 import java.util.ArrayList;
-
 import erhs53.mapping.search.Action;
 import erhs53.mapping.search.Path;
 import erhs53.mapping.search.State;
@@ -21,6 +20,7 @@ public class Road extends State {
 	public boolean circle; /** Is the road part of a circle */
 	public double cost; /** The total cost of traversing the road */
 	private ArrayList<Action> actions;/** The Roads you can turn on to from this one*/	
+	private final static double TURN_COST = 20;
 	
 	public Road(String name, double length) {
 		this.actions = new ArrayList<>();
@@ -63,8 +63,11 @@ public class Road extends State {
 	 * The cost of going from the start of this Road to the end of
 	 * Road s
 	 */
-	public double cost(State s) {
-		return ((Road) s).cost;
+	public double cost(Action a) {
+		Road road = (Road) a.state;
+		if(a.type == Map.TL || a.type == Map.TR)
+			return road.cost + TURN_COST;
+		return road.cost;
 	}
 
 }

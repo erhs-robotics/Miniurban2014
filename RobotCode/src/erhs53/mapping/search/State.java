@@ -18,7 +18,7 @@ public abstract class State {
 	 * @param state
 	 * @return
 	 */
-	public abstract double cost(State state);
+	public abstract double cost(Action action);
 	
 	/**
 	 * The available actions in the State this. For Goals,

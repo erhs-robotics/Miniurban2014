@@ -171,8 +171,7 @@ public class Goal extends State {
 
 	public Goal(String name, Road road) {
 		this.name = name;
-		this.road = road;
-				
+		this.road = road;				
 	}
 	
 	/**
@@ -180,8 +179,8 @@ public class Goal extends State {
 	 * @param g
 	 * @return
 	 */
-	public double cost(State g) {		
-		return COST.get(name).get(g.name);
+	public double cost(Action a) {	
+		return COST.get(name).get(a.state.name);
 	}
 	
 	/**

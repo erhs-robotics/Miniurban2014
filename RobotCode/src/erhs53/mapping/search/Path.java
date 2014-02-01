@@ -71,7 +71,7 @@ public class Path {
 		ArrayList<Path> paths = new ArrayList<>();
 		for (Action a : lastState().actions(this)) {
 			if (!this.contains(a.state)) {
-				double newCost = lastState().cost(a.state);
+				double newCost = lastState().cost(a);
 				Path p = new Path(actions, cost + newCost);
 				p.add(a);
 				paths.add(p);

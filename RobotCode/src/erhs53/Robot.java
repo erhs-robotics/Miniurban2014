@@ -9,6 +9,7 @@ public class Robot {
 	private final NXTRegulatedMotor leftMotor, rightMotor;	
 	public DifferentialPilot pilot;
 	private float speed = 400;
+	
 		
 	public Robot() {
 		leftMotor = new NXTRegulatedMotor(RoboMap.LEFT_MOTOR_PORT);
