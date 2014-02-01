@@ -4,7 +4,7 @@ import erhs53.mapping.Map;
 import erhs53.mapping.search.Path;
 
 
-public class Main {
+public class Miniurban2014 {
 	
 	public static void main(String[] args) {
 				
