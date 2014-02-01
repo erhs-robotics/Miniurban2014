@@ -7,8 +7,7 @@ import erhs53.mapping.search.Path;
 public class Main {
 	
 	public static void main(String[] args) {
-		//System.out.println(Map.generateCosts(Map.G1, Map.G2, Map.G3, Map.G4, Map.G5, Map.G6, Map.G7, Map.G8, Map.G9));
-		
+				
 		Map.G1.set(1, Map.PR);
 		Map.G2.set(1, Map.PL);
 		Map.G9.set(1, Map.PR);		
@@ -19,9 +18,7 @@ public class Main {
 			return;
 		}
 		
-		p.print();
-		//*/
-		
+		p.print();		
 		
 	}
 	
