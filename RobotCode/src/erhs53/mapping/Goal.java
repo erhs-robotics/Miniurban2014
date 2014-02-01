@@ -45,18 +45,18 @@ public class Goal extends State {
 		COST.put("START", START);*/
 		
 		HashMap<String, Double> G1 = new HashMap<>();
-		G1.put("G2", 1030.0);
-		G1.put("G3", 535.0);
-		G1.put("G4", 90.0);
-		G1.put("G5", 455.0);
-		G1.put("G6", 615.0);
-		G1.put("G7", 690.0);
-		G1.put("G8", 640.0);
-		G1.put("G9", 1105.0);
-		G1.put("END", 835.0);
+		G1.put("G2", 1595.0);
+		G1.put("G3", 1135.0);
+		G1.put("G4", 1070.0);
+		G1.put("G5", 1020.0);
+		G1.put("G6", 855.0);
+		G1.put("G7", 1255.0);
+		G1.put("G8", 1205.0);
+		G1.put("G9", 1330.0);
+		G1.put("END", 1400.0);
 
 		HashMap<String, Double> G2 = new HashMap<>();
-		G2.put("G1", 415.0);
+		G2.put("G1", 1270.0);
 		G2.put("G3", 535.0);
 		G2.put("G4", 90.0);
 		G2.put("G5", 455.0);
@@ -67,29 +67,29 @@ public class Goal extends State {
 		G2.put("END", 835.0);
 
 		HashMap<String, Double> G3 = new HashMap<>();
-		G3.put("G1", 580.0);
+		G3.put("G1", 1435.0);
 		G3.put("G2", 1195.0);
 		G3.put("G4", 670.0);
-		G3.put("G5", 505.0);
+		G3.put("G5", 620.0);
 		G3.put("G6", 455.0);
-		G3.put("G7", 740.0);
-		G3.put("G8", 690.0);
+		G3.put("G7", 855.0);
+		G3.put("G8", 805.0);
 		G3.put("G9", 960.0);
 		G3.put("END", 1000.0);
 
 		HashMap<String, Double> G4 = new HashMap<>();
-		G4.put("G1", 650.0);
+		G4.put("G1", 1505.0);
 		G4.put("G2", 1265.0);
 		G4.put("G3", 445.0);
-		G4.put("G5", 575.0);
+		G4.put("G5", 690.0);
 		G4.put("G6", 525.0);
-		G4.put("G7", 810.0);
-		G4.put("G8", 760.0);
+		G4.put("G7", 925.0);
+		G4.put("G8", 875.0);
 		G4.put("G9", 1030.0);
 		G4.put("END", 1070.0);
 
 		HashMap<String, Double> G5 = new HashMap<>();
-		G5.put("G1", 740.0);
+		G5.put("G1", 1595.0);
 		G5.put("G2", 1355.0);
 		G5.put("G3", 895.0);
 		G5.put("G4", 830.0);
@@ -100,7 +100,7 @@ public class Goal extends State {
 		G5.put("END", 1160.0);
 
 		HashMap<String, Double> G6 = new HashMap<>();
-		G6.put("G1", 905.0);
+		G6.put("G1", 1760.0);
 		G6.put("G2", 1520.0);
 		G6.put("G3", 1060.0);
 		G6.put("G4", 995.0);
@@ -111,7 +111,7 @@ public class Goal extends State {
 		G6.put("END", 1325.0);
 
 		HashMap<String, Double> G7 = new HashMap<>();
-		G7.put("G1", 1105.0);
+		G7.put("G1", 1960.0);
 		G7.put("G2", 1720.0);
 		G7.put("G3", 1640.0);
 		G7.put("G4", 1195.0);
@@ -122,7 +122,7 @@ public class Goal extends State {
 		G7.put("END", 1525.0);
 
 		HashMap<String, Double> G8 = new HashMap<>();
-		G8.put("G1", 825.0);
+		G8.put("G1", 1680.0);
 		G8.put("G2", 1440.0);
 		G8.put("G3", 1360.0);
 		G8.put("G4", 915.0);
@@ -133,7 +133,7 @@ public class Goal extends State {
 		G8.put("END", 1245.0);
 
 		HashMap<String, Double> G9 = new HashMap<>();
-		G9.put("G1", 775.0);
+		G9.put("G1", 1630.0);
 		G9.put("G2", 1390.0);
 		G9.put("G3", 1310.0);
 		G9.put("G4", 865.0);
@@ -144,15 +144,15 @@ public class Goal extends State {
 		G9.put("END", 1195.0);
 
 		HashMap<String, Double> START = new HashMap<>();
-		START.put("G1", 820.0);
-		START.put("G2", 405.0);
-		START.put("G3", 445.0);
-		START.put("G4", 495.0);
-		START.put("G5", 860.0);
-		START.put("G6", 900.0);
-		START.put("G7", 1095.0);
-		START.put("G8", 1045.0);
-		START.put("G9", 1405.0);
+		START.put("G1", 435.0);
+		START.put("G2", 2030.0);
+		START.put("G3", 1570.0);
+		START.put("G4", 1505.0);
+		START.put("G5", 1455.0);
+		START.put("G6", 1290.0);
+		START.put("G7", 1690.0);
+		START.put("G8", 1640.0);
+		START.put("G9", 1765.0);
 
 		COST = new HashMap<>();
 		COST.put("G1", G1);
@@ -200,9 +200,8 @@ public class Goal extends State {
 	 */
 	public ArrayList<Action> actions(Path path) {
 		//if all goals have been visited, append Map.END to the list of options
-		if(path.length() >= Map.goalNum + 1) {
-			@SuppressWarnings("unchecked")
-			ArrayList<Action> newActions = (ArrayList<Action>) actions.clone();
+		if(path.length() >= Map.goalNum + 1) {			
+			ArrayList<Action> newActions = Action.clone(actions);
 			newActions.add(new Action(0, Map.END));
 			return newActions;
 		}

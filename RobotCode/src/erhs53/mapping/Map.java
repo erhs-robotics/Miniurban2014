@@ -150,7 +150,7 @@ public class Map {
 		END = new Goal("END", Map.V2);*/
 		
 		//Section A
-		AH0.setActions(a(TL, AV1));
+		AH0.setActions(a(TL, AV0));
 		AH1.setActions(a(TL, AV1), a(GS, AH0));
 		AH2.setActions(a(GS, BH2), a(TR, AV6));
 		AH3.setActions(a(TL, AV4));
@@ -181,7 +181,7 @@ public class Map {
 		BH6.setActions(a(GS, BH5), a(TR, BV4));
 		BH7.setActions(a(TR, BC0));
 		BH8.setActions(a(GS, BH9), a(TL, BV7));
-		BH9.setActions(a(GS, BH10), a(TR, BV1));
+		BH9.setActions(a(GS, BH10), a(TR, BV11));
 		BH10.setActions(a(GS, CH6), a(TR, BV13));
 		BH11.setActions(a(GS, BH12), a(TL, BV12));
 		BH12.setActions(a(GS, CH11), a(TL, CV7));
@@ -251,7 +251,7 @@ public class Map {
 		
 		for(Goal g : goals) {
 			@SuppressWarnings("unchecked")
-			ArrayList<Action> _actions = (ArrayList<Action>) actions.clone();
+			ArrayList<Action> _actions = Action.clone(actions);
 			_actions.remove(g);			
 			g.actions = _actions;
 		}
@@ -286,30 +286,37 @@ public class Map {
 		String result = "";
 		for(Goal start : goals) {
 			System.out.println(start.name);
-			result += String.format(declaration, start.name);
+			//result += String.format(declaration, start.name);
+			result += "HashMap<String, Double> %s" + start.name + " = new HashMap<>();\n";
 			for(Goal end : goals) {
 				if(start == end) continue;				
 				Path p = Path.CFS(start.road, end.road);
-				result += String.format(keyValue, start.name, end.name, p.cost);				
+				//result += String.format(keyValue, start.name, end.name, p.cost);
+				result += start.name + ".put(\"" + end.name + "\", " + p.cost + ");\n";
 			}
 			// Also find cost to finish
 			Path p = Path.CFS(start.road, END.road);
-			result += String.format(keyValue, start.name, END.name, p.cost);
+			//result += String.format(keyValue, start.name, END.name, p.cost);
+			result += start.name + ".put(\"" + END.name + "\", " + p.cost + ");\n";
 			result += "\n";
 		}
 		// Also find the cost from start to each goal
-		result += String.format(declaration, START.name);
+		//result += String.format(declaration, START.name);
+		result += "HashMap<String, Double> %s" + START.name + " = new HashMap<>();\n";
 		for(Goal end : goals) {
 			Path p = Path.CFS(START.road, end.road);
-			result += String.format(keyValue, START.name, end.name, p.cost);
+			//result += String.format(keyValue, START.name, end.name, p.cost);
+			result += START.name + ".put(\"" + end.name + "\", " + p.cost + ");\n";
 		}
 		// Finish up by appending all new hashmaps to the master map
 		result += "\nCOST = new HashMap<>();\n";
 		for(Goal g : goals) {
-			result += String.format(keyValue, "COST", g.name, g.name);
+			//result += String.format(keyValue, "COST", g.name, g.name);
+			result += "COST.put(\"" + g.name + "\", " + g.name + ");\n";
 		}
 		// Don't forget the start
-		result += String.format(keyValue, "COST", START.name, START.name);		
+		//result += String.format(keyValue, "COST", START.name, START.name);
+		result += "COST.put(\"" + START.name + "\", " + START.name + ");\n";
 		
 		
 		return result;
