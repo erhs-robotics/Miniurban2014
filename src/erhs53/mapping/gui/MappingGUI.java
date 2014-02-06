@@ -39,6 +39,8 @@ public class MappingGUI extends JFrame {
 	HashMap<String, Goal> goals;
 	HashMap<String, RoadPos> roads;
 	
+	ArrayList<ArrayList<RoadPos>> paths = new ArrayList<ArrayList<RoadPos>>();
+	
 	Color[] colors = new Color[] {Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.pink};
 	int colorIndex = 0;
 	
@@ -201,7 +203,12 @@ public class MappingGUI extends JFrame {
 					goals.get(g).set(1, Map.PL);
 				}
 				System.out.println("Calculating path");
-				sketchPath(Map.generatePath(goalList));
+//				sketchPath(Map.generatePath(goalList));
+				loadPaths(Map.generatePath(goalList));
+				/*for(int i=0; i<paths.size(); i++) {
+					sketchPath(i);
+				}*/
+				sketchPath(-1);
 			}
 		});
 		controlPanel.add(goalsField);
@@ -210,6 +217,26 @@ public class MappingGUI extends JFrame {
 		this.setLayout(new BorderLayout());
 		this.add(controlPanel, BorderLayout.SOUTH);
 		this.add(imagePanel, BorderLayout.CENTER);
+	}
+	
+	public void loadPaths(Path path) {
+		if(path == null) return;
+		for(Action a : path.actions) {
+			System.out.println(a.state.name);
+		}
+		int i = 0;
+		paths.add(new ArrayList<RoadPos>());
+		for(Action a: path.actions) {
+			System.out.print(a.state.name + ",");
+			if(a.state.name.startsWith("G")) {
+				i++;
+				paths.add(new ArrayList<RoadPos>());
+				continue;
+			}
+			else {
+				paths.get(i).add(roads.get(a.state.name));
+			}
+		}
 	}
 	
 	public void sketchPath(Path path) {
@@ -229,11 +256,38 @@ public class MappingGUI extends JFrame {
 			g.setColor(colors[colorIndex]);
 			g.setStroke(new BasicStroke(3));
 			if(rpos == null) System.out.println("\nrpos is null");
-			for(int i=1; i<rpos.points.length; i++) {
+			/*for(int i=1; i<rpos.points.length; i++) {
 				g.drawLine(rpos.points[i-1].x, rpos.points[i-1].y, rpos.points[i].x, rpos.points[i-1].y);
-			}
+			}*/
+			g.drawLine(rpos.points[0].x, rpos.points[0].y, rpos.points[1].x, rpos.points[1].y);
 		}
 		System.out.println("Done");
+	}
+	
+	public void sketchPath(int path) {
+		colorIndex = 0; 
+		screenImage.getGraphics().drawImage(mapImage, 0, 0, null);
+		Graphics2D g = (Graphics2D) screenImage.getGraphics();
+		g.setColor(colors[colorIndex]);
+		g.setStroke(new BasicStroke(3));
+		if(path == -1) {
+			for(int i=0; i<paths.size(); i++) {
+				for(int j=0; j<paths.get(i).size(); j++) {
+					RoadPos rpos = paths.get(i).get(j);
+					if(rpos == null) continue;
+					System.out.println(rpos.points[0] + ", " + rpos.points[1]);
+					g.drawLine(rpos.points[0].x, rpos.points[0].y, rpos.points[1].x, rpos.points[1].y);
+				}
+				colorIndex++;
+			}
+			return;
+		}
+		for(int i=0; i<paths.get(path).size(); i++) {
+			RoadPos rpos = paths.get(path).get(i);
+			if(rpos == null) continue;
+			System.out.println(rpos.points[0] + ", " + rpos.points[1]);
+			g.drawLine(rpos.points[0].x, rpos.points[0].y, rpos.points[1].x, rpos.points[1].y);
+		}
 	}
 	
 	public static void main(String[] args) {
