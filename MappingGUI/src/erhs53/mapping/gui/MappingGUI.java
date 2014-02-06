@@ -232,9 +232,4 @@ public class MappingGUI extends JFrame {
 		}
 		System.out.println("Done");
 	}
-	
-	public static void main(String[] args) {
-		new MappingGUI();
-	}
-
 }
