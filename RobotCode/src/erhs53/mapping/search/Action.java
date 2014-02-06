@@ -1,4 +1,7 @@
 package erhs53.mapping.search;
+
+import java.util.ArrayList;
+
 /**
  * Used to conveniently store type, state tuples
  * 
@@ -12,5 +15,11 @@ public class Action {
 	public Action(int type, State state) {
 		this.type = type;
 		this.state = state;
-	}	
+	}
+	
+	public static ArrayList<Action> clone(ArrayList<Action> x) {
+		ArrayList<Action> clone = new ArrayList<>();
+		clone.addAll(x);
+		return clone;		
+	}
 }
