@@ -16,7 +16,7 @@ public class Mapper {
 			return;
 		}
 		
-		p.print();
+		p.printCodeArray();
 
 	}
 }
