@@ -138,14 +138,6 @@ public class Path {
 			System.out.println(": " + a.state.name);
 		}
 	}
-	
-	public void printCodeArray() {
-		System.out.printf("Action[] actions = new Action[%s];\n", actions.size());
-		for(int i=0;i<actions.size();i++) {
-			Action a = actions.get(i);
-			System.out.printf("actions[%s] = new Action(%s, %s);\n", i, a.type, "Map." + a.state.name);
-		}
-	}
 
 	/**
 	 * Performs a cost first search

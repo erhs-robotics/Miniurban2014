@@ -1,5 +1,6 @@
 package erhs53.utilities;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +48,7 @@ public class NaiveBayes {
      */
 	public static class Label {
 		int id;
-		Map<Integer, Gaus> features;
+		ArrayList<Gaus> features;
 		double prior;
 		
         /**
@@ -57,7 +58,7 @@ public class NaiveBayes {
          * @param prior The probability that an observation belongs to a 
          *        label given no Gaussian information (should be based off of frequencies)
          */
-		public Label(int id, Map<Integer, Gaus> features, double prior) {
+		public Label(int id, ArrayList<Gaus> features, double prior) {
 			this.id = id;
 			this.features = features;
 			this.prior = prior;
@@ -77,14 +78,12 @@ public class NaiveBayes {
      * @return A value porportional to the probability that z should be 
      *         labeled as id
      */
-	private double posterior(Map<Integer, Double> z, int id) {
+	private double posterior(ArrayList<Double> z, int id) {
 		Label label = labels.get(id);
 		double p = label.prior;		
-		for(int i : label.features.keySet()) {
-			if(z.containsKey(i)) {
-				Gaus gaus = label.features.get(i);
-				p *= gaus.eval(z.get(i));
-			}
+		for(int i=0;i<label.features.size();i++) {			
+			Gaus gaus = label.features.get(i);
+			p *= gaus.eval(z.get(i));			
 		}
 		return p;
 	}
@@ -95,10 +94,10 @@ public class NaiveBayes {
      * @param z The observation to be classified
      * @return The label that best fits the observation 
      */
-	public int classify(Map<Integer, Double> z) {
+	public int classify(ArrayList<Double> z) {
 		int id = -1;
 		double maxp = 0;
-		for(int i : labels.keySet()) {
+		for(int i = 0; i < z.size(); i++) {
 			double p = posterior(z, i);
 			if(p > maxp) {
 				maxp = p;
