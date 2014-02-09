@@ -6,7 +6,7 @@ import erhs53.mapping.search.Path;
 
 public class Mapper {
 	static void printCodeArray(Path p) {
-		System.out.printf("Action[] actions = new Action[%s];\n", actions.size());
+		System.out.printf("Action[] actions = new Action[%s];\n", p.actions.size());
 		for(int i=0;i<p.actions.size();i++) {
 			Action a = p.actions.get(i);
 			System.out.printf("actions[%s] = new Action(%s, %s);\n", i, a.type, "Map." + a.state.name);
