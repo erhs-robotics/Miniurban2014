@@ -65,7 +65,7 @@ public class NaiveBayes {
 		}
 	}
 	
-	Map<Integer, Label> labels = new Hashtable<>();
+	Hashtable<Integer, Label> labels = new Hashtable<>();
 	
 	public void addLabel(Label label) {
 		labels.put(label.id, label);
