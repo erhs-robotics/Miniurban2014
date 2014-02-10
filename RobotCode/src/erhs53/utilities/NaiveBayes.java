@@ -1,14 +1,14 @@
 package erhs53.utilities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 
 /**
  * A continuous domain classifier that uses one dimensional Gaussians to 
  * describe feature probability distributions and the strict application of 
- * Bayes Rule to probabalisticaly determine the best label for a set of features.
- * The Bayes Classifier assumes conditional independance among features.
+ * Baye's Rule to probabilistically determine the best label for a set of features.
+ * The Baye's Classifier assumes conditional independence among features.
  * 
  * @author Michael Stevens
  */
@@ -19,15 +19,15 @@ public class NaiveBayes {
      * A Class that describes a data set with a one dimensional Gaussian
      */     
 	public static class Gaus {
-		private double mu, sigma2;
+		private double mean, variance;
 		
         /** 
          * @param mu The average of the data set
-         * @param sigma2 The variance of the data set
+         * @param variance The variance of the data set
          */         
-		public Gaus(double mu, double sigma2) {
-			this.mu = mu;
-			this.sigma2 = sigma2;			
+		public Gaus(double mean, double variance) {
+			this.mean = mean;
+			this.variance = variance;			
 		}
 		
         /**
@@ -37,8 +37,8 @@ public class NaiveBayes {
          * @return The value of the Gaussian defined by mu and sigma2 at point x
          */
 		public double eval(double x) {
-			double k = 1.0 / Math.sqrt(2 * Math.PI * sigma2);
-			return k * Math.exp(-Math.pow(x - mu, 2) / (2 * sigma2));
+			double k = 1.0 / Math.sqrt(2 * Math.PI * variance);
+			return k * Math.exp(-Math.pow(x - mean, 2) / (2 * variance));
 		}
 	}
     
@@ -65,22 +65,22 @@ public class NaiveBayes {
 		}
 	}
 	
-	Map<Integer, Label> labels = new HashMap<>();
+	Map<Integer, Label> labels = new Hashtable<>();
 	
 	public void addLabel(Label label) {
 		labels.put(label.id, label);
 	}
     
 	/**
-     * Calculates the numerator value for Bayes rule
+     * Calculates the numerator value for Baye's rule
      * @param z The set of feature observation
      * @param id The label to test the feature set against
-     * @return A value porportional to the probability that z should be 
+     * @return A value proportional to the probability that z should be 
      *         labeled as id
      */
 	private double posterior(ArrayList<Double> z, int id) {
 		Label label = labels.get(id);
-		double p = label.prior;		
+		double p = label.prior;
 		for(int i=0;i<label.features.size();i++) {			
 			Gaus gaus = label.features.get(i);
 			p *= gaus.eval(z.get(i));			
@@ -97,14 +97,13 @@ public class NaiveBayes {
 	public int classify(ArrayList<Double> z) {
 		int id = -1;
 		double maxp = 0;
-		for(int i = 0; i < z.size(); i++) {
+		for(int i = 0; i < labels.size(); i++) {
 			double p = posterior(z, i);
 			if(p > maxp) {
 				maxp = p;
 				id = i;
 			}
-		}
-		
+		}		
 		return id;
 	}	
 }
