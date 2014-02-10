@@ -7,9 +7,9 @@ import lejos.nxt.Button;
 import lejos.nxt.comm.RConsole;
 import lejos.robotics.Color;
 
-import erhs53.utilities.NaiveBayes;
-import erhs53.utilities.NaiveBayes.Gaus;
-import erhs53.utilities.NaiveBayes.Label;
+import erhs53.utilities.BayesFilter;
+import erhs53.utilities.BayesFilter.Gaus;
+import erhs53.utilities.BayesFilter.Label;
 
 public class ColorClassify {
 	static final int R = 0, G = 1, B = 2;
@@ -23,7 +23,7 @@ public class ColorClassify {
 		RConsole.openBluetooth(0);
 		Robot robot = new Robot();
 		RConsole.println("made robot");
-		NaiveBayes filter = new NaiveBayes();
+		BayesFilter filter = new BayesFilter();
 		RConsole.println("made filter");
 		
 		ArrayList<Gaus> whiteMap = new ArrayList<>();

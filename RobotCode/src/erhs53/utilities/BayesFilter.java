@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Michael Stevens
  */
  
-public class NaiveBayes {
+public class BayesFilter {
     
 	/**
      * A Class that describes a data set with a one dimensional Gaussian
