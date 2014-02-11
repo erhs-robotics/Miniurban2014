@@ -63,14 +63,23 @@ public class BayesFilter {
 			this.features = features;
 			this.prior = prior;
 		}
+		
+		public Label(int id, Gaus[] features, double prior) {
+			this.id = id;
+			this.features = new ArrayList<>();
+			for(Gaus g : features) this.features.add(g);
+			this.prior = prior;
+		}
 	}
 	
 	private Hashtable<Integer, Label> labels = new Hashtable<>();
 	private int labelsLen = 0;
 	
-	public void addLabel(Label label) {
-		labels.put(label.id, label);
-		labelsLen++;
+	public void addLabel(Label... labels) {
+		for(Label label : labels) {
+			this.labels.put(label.id, label);
+			labelsLen++;
+		}
 	}
     
 	/**
