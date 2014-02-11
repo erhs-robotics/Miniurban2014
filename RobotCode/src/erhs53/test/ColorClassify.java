@@ -1,4 +1,4 @@
-package erhs53.calibration;
+package erhs53.test;
 
 import lejos.nxt.Button;
 import lejos.nxt.comm.RConsole;
