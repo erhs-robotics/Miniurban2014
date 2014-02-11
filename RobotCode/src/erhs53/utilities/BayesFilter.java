@@ -65,10 +65,12 @@ public class BayesFilter {
 		}
 	}
 	
-	Hashtable<Integer, Label> labels = new Hashtable<>();
+	private Hashtable<Integer, Label> labels = new Hashtable<>();
+	private int labelsLen = 0;
 	
 	public void addLabel(Label label) {
 		labels.put(label.id, label);
+		labelsLen++;
 	}
     
 	/**
@@ -97,7 +99,7 @@ public class BayesFilter {
 	public int classify(ArrayList<Double> z) {
 		int id = -1;
 		double maxp = 0;
-		for(int i = 0; i < labels.size(); i++) {
+		for(int i = 0; i < labelsLen; i++) {
 			double p = posterior(z, i);
 			if(p > maxp) {
 				maxp = p;
