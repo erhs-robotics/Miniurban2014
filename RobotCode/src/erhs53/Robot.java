@@ -1,5 +1,6 @@
 package erhs53;
 
+import erhs53.utilities.ColorFilter;
 import erhs53.utilities.MathUtils;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
@@ -8,12 +9,13 @@ import lejos.robotics.navigation.DifferentialPilot;
 
 public class Robot {
 	
-	private final NXTRegulatedMotor leftMotor, rightMotor;	
-	public DifferentialPilot pilot;
-	
-	public ColorHTSensor outerLeftColor, innerLeftColor, outerRightColor, innerRightColor;
-	private float speed = 400;
-	
+	public final NXTRegulatedMotor leftMotor, rightMotor;	
+	public final DifferentialPilot pilot;	
+	public final ColorHTSensor outerLeftColor, innerLeftColor;
+	public final ColorHTSensor outerRightColor;
+	public final ColorHTSensor innerRightColor;
+	public final ColorFilter colorFilter;
+	private float speed = 400;	
 		
 	public Robot() {
 		leftMotor = new NXTRegulatedMotor(RoboMap.LEFT_MOTOR_PORT);
@@ -23,6 +25,7 @@ public class Robot {
 		innerLeftColor = null;
 		outerRightColor = new ColorHTSensor(SensorPort.S1);
 		innerRightColor = new ColorHTSensor(SensorPort.S2);
+		colorFilter = new ColorFilter();
 		setSpeed(RoboMap.MAXSPEED);		
 	}
 	

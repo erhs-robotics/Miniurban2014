@@ -21,14 +21,12 @@ public class RoboMap {
 	public static final long STOP_WAIT_TIME   = 1;
 	public static final long PARK_WAIT_TIME   = 5;
 	
-	public static final Gaus[] WHITE_SIG      = new Gaus[] {Gaus(0, 0), Gaus(0, 0), Gaus(0, 0)};
+	public static final Gaus[] WHITE_SIG      = new Gaus[] {Gaus(248.6f, 4.44f), Gaus(255, .2f), Gaus(254, 0.36f)};
 	public static final Gaus[] RED_SIG        = new Gaus[] {Gaus(0, 0), Gaus(0, 0), Gaus(0, 0)};
-	public static final Gaus[] BLUE_SIG       = new Gaus[] {Gaus(0, 0), Gaus(0, 0), Gaus(0, 0)};
+	public static final Gaus[] BLUE_SIG       = new Gaus[] {Gaus(24.6f, 53.44f), Gaus(57.4f, 47.84f), Gaus(118.1f, 83.89f)};
 	public static final Gaus[] BLACK_SIG      = new Gaus[] {Gaus(0, 0), Gaus(0, 0), Gaus(0, 0)};
 	public static final Gaus[] GREEN_SIG      = new Gaus[] {Gaus(0, 0), Gaus(0, 0), Gaus(0, 0)};
-	public static final Gaus[] YELLOW_SIG     = new Gaus[] {Gaus(0, 0), Gaus(0, 0), Gaus(0, 0)};
-	
-	
+	public static final Gaus[] YELLOW_SIG     = new Gaus[] {Gaus(0, 0), Gaus(0, 0), Gaus(0, 0)};	
 	
 	public static final double[] PARK_COUNTS  = {0, 686.5, 1378.0, 2114.5, 0};
 	

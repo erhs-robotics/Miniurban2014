@@ -1,5 +1,6 @@
-package erhs53;
+package erhs53.calibration;
 
+import erhs53.Robot;
 import lejos.nxt.Button;
 import lejos.nxt.comm.RConsole;
 import lejos.robotics.Color;

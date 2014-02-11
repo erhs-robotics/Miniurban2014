@@ -6,7 +6,7 @@ import erhs53.RoboMap;
 
 public class ColorFilter extends BayesFilter {
 	public static enum Color {
-		WHITE, BLACK, BLUE, RED, GREEN, YELLOW
+		WHITE, BLACK, BLUE, RED, GREEN, YELLOW, NONE
 	}
 
 	public ColorFilter() {
@@ -27,6 +27,7 @@ public class ColorFilter extends BayesFilter {
 		z.add((double) color.getBlue());
 		
 		int c = this.classify(z);
+		if(c == -1) return Color.NONE;
 		return Color.values()[c];
 	}
 }
