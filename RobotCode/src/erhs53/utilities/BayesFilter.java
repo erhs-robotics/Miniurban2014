@@ -89,7 +89,7 @@ public class BayesFilter {
      * @return A value proportional to the probability that z should be 
      *         labeled as id
      */
-	private double posterior(ArrayList<Double> z, int id) {
+	public double posterior(ArrayList<Double> z, int id) {
 		Label label = labels.get(id);
 		double p = label.prior;
 		for(int i=0;i<label.features.size();i++) {			

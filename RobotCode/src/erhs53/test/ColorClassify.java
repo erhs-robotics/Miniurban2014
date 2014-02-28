@@ -15,5 +15,6 @@ public class ColorClassify {
 			Color color = robot.outerRightColor.getColor();			
 			RConsole.println(robot.colorFilter.classify(color).name());			
 		}
+		
 	}
 }

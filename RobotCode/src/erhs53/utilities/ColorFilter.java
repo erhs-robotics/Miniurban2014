@@ -30,4 +30,15 @@ public class ColorFilter extends BayesFilter {
 		if(c == -1) return Color.NONE;
 		return Color.values()[c];
 	}
+	
+	public double posterior(lejos.robotics.Color color, Color colorClass) {
+		ArrayList<Double> z = new ArrayList<Double>(3);
+		z.add((double)color.getRed());
+		z.add((double) color.getGreen());
+		z.add((double) color.getBlue());
+		
+		return this.posterior(z, colorClass.ordinal());
+	}
+	
+	
 }

@@ -30,20 +30,21 @@ public class ColorCalibrate {
 	
 	public static void main(String[] args) {
 		RConsole.openBluetooth(0);
-		int[] red = new int[10];
-		int[] green = new int[10];
-		int[] blue = new int[10];
+		int[] red = new int[5];
+		int[] green = new int[5];
+		int[] blue = new int[5];
 		
 		Robot robot = new Robot();
 		RConsole.println("Ready");
 		Button.waitForAnyPress();
-		for(int i=0;i<10;i++) {
+		for(int i=0;i<5;i++) {
 			Color color = robot.outerRightColor.getColor();
 			red[i] = color.getRed();
 			green[i] = color.getGreen();
 			blue[i] = color.getBlue();
+			RConsole.println(red[i] + ", " + green[i] + ", " + blue[i]);
 			Button.waitForAnyPress();
-			RConsole.println("Done with i = " + i);
+			
 		}
 		
 		

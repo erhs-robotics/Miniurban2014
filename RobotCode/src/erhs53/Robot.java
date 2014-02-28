@@ -51,8 +51,8 @@ public class Robot {
 	
 		leftMotor.setSpeed(speed * leftDrive);
 		rightMotor.setSpeed(speed * rightDrive);
-		leftMotor.forward();
-		rightMotor.forward();
+		leftMotor.backward();
+		rightMotor.backward();
 	}
 	
 	public void stop() {
