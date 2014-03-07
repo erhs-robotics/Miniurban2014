@@ -4,7 +4,11 @@ import lejos.robotics.Color;
 import erhs53.utilities.MathUtils;
 
 public class MembershipFunction {
-	// Component Membership Function
+	
+	// ======================================================
+	// Nested Classes
+	// ======================================================
+	
 	public static class ComponentFunction {
 		float color1; // The mean of the color expected at full membership
 		float color0; // The mean of the color expected at 0 membership
@@ -20,11 +24,23 @@ public class MembershipFunction {
 		}
 	}
 	
+	// ======================================================
+	// Variables
+	// ======================================================
+	
 	private ComponentFunction[] componentFunctions;
+	
+	// ======================================================
+	// Constructor
+	// ======================================================
 	
 	public MembershipFunction(ComponentFunction... componentFunctions) {
 		this.componentFunctions = componentFunctions;
 	}
+	
+	// ======================================================
+	// Class Logic
+	// ======================================================
 	
 	private float[] getComponents(Color color) {
 		float[] result = new float[3];
@@ -32,17 +48,6 @@ public class MembershipFunction {
 		result[1] = componentFunctions[1].evaluate(color.getGreen());
 		result[2] = componentFunctions[2].evaluate(color.getBlue());
 		return result;
-	}
-	
-	public float evaluate(Color color) {
-		float[] components = getComponents(color);
-		return components[0] * components[1] * components[2];
-	}
-	
-	public float evaluateMagnitude(Color color) {
-		float[] components = getComponents(color);
-		double sumSquares = Math.pow(components[0], 2) + Math.pow(components[1], 2) + Math.pow(components[2], 2);
-		return  (float) (1 / Math.sqrt(3) * Math.sqrt(sumSquares));
 	}
 	
 	public float evaluateAve(Color color) {

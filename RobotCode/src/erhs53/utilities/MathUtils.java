@@ -45,5 +45,29 @@ public class MathUtils {
 	public static double map(double x, double in_min, double in_max, double out_min, double out_max) {
 	  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 	}
+	
+	public static int argMax(float... x) {
+		int max_i = 0;
+		
+		for(int i=1;i<x.length;i++) {
+			if(x[i] > x[max_i]) {
+				max_i = i;			
+			}
+		}
+		
+		return max_i;
+	}
+
+	public static float max(float... x) {
+		float max = 0;
+		
+		for(int i=1;i<x.length;i++) {
+			if(x[i] > max) {
+				max = i;			
+			}
+		}
+		
+		return max;
+	}
 
 }

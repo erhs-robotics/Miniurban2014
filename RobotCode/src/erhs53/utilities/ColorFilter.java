@@ -3,42 +3,45 @@ package erhs53.utilities;
 import java.util.ArrayList;
 
 import erhs53.RoboMap;
+import erhs53.control.MembershipFunction;
+import erhs53.control.MembershipFunction.ComponentFunction;
 
-public class ColorFilter extends BayesFilter {
+public class ColorFilter {
+	
+	// ======================================================
+	// Nested Types
+	// ======================================================
+	
 	public static enum Color {
 		WHITE, BLACK, BLUE, RED, GREEN, YELLOW, NONE
 	}
-
-	public ColorFilter() {
-		Label white  = new Label(Color.WHITE.ordinal(), RoboMap.WHITE_SIG, 1f/6);
-		Label black  = new Label(Color.BLACK.ordinal(), RoboMap.BLACK_SIG, 1f/6);
-		Label blue   = new Label(Color.BLUE.ordinal(), RoboMap.BLUE_SIG, 1f/6);
-		Label red    = new Label(Color.RED.ordinal(), RoboMap.RED_SIG, 1f/6);
-		Label green  = new Label(Color.GREEN.ordinal(), RoboMap.GREEN_SIG, 1f/6);
-		Label yellow = new Label(Color.YELLOW.ordinal(), RoboMap.YELLOW_SIG, 1f/6);
-		
-		this.addLabel(white, black, blue, red, green, yellow);
+	
+	// ======================================================
+	// Constants
+	// ======================================================
+	
+	public static final MembershipFunction white;	
+	
+	// ======================================================
+	// Static Initializer
+	// ======================================================
+	
+	static {
+		ComponentFunction whiteR = new ComponentFunction(RoboMap.WHITE_SIG[0], RoboMap.BLACK_SIG[0]);
+		ComponentFunction whiteG = new ComponentFunction(RoboMap.WHITE_SIG[1], RoboMap.BLACK_SIG[1]);
+		ComponentFunction whiteB = new ComponentFunction(RoboMap.WHITE_SIG[2], RoboMap.BLACK_SIG[2]);
+		white = new MembershipFunction(whiteR, whiteG, whiteB);		
 	}
 	
-	public Color classify(lejos.robotics.Color color) {
-		ArrayList<Double> z = new ArrayList<Double>(3);
-		z.add((double)color.getRed());
-		z.add((double) color.getGreen());
-		z.add((double) color.getBlue());
+	// ======================================================
+	// Class Logic
+	// ======================================================
+	
+	public static Color classify(lejos.robotics.Color color) {		
+		float whiteValue = white.evaluateAve(color);
+		float blackValue = 1 - MathUtils.max(whiteValue);
+		int i = MathUtils.argMax(whiteValue, blackValue);
+		return Color.values()[i];
 		
-		int c = this.classify(z);
-		if(c == -1) return Color.NONE;
-		return Color.values()[c];
-	}
-	
-	public double posterior(lejos.robotics.Color color, Color colorClass) {
-		ArrayList<Double> z = new ArrayList<Double>(3);
-		z.add((double)color.getRed());
-		z.add((double) color.getGreen());
-		z.add((double) color.getBlue());
-		
-		return this.posterior(z, colorClass.ordinal());
-	}
-	
-	
+	}	
 }

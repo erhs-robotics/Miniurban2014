@@ -2,23 +2,15 @@ package erhs53.mapping;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import erhs53.mapping.search.Action;
 import erhs53.mapping.search.Path;
 import erhs53.mapping.search.State;
-/*         G2
- *        > >
- *        ^ V 
- *    + > + V
- * G1 ^   ^ V G3
- *    + < + V
- *      ^ 
- *      ^
- */
-
-
 
 public class Map {
+	// ======================================================
+	// Constants
+	// ======================================================
+	
 	// Types of actions
 	public static int TL = 1; // Turn Left
 	public static int TR = 2; // Turn Right
@@ -28,12 +20,10 @@ public class Map {
 	public static int S = 6;  // Start
 	public static int F = 7;  // Finish
 
-	/** ROAD LIST *****************************************************************/
-	// Every road in the map
-	/*public static Road V1 = new Road("V1", 1), V2 = new Road("V2", 1),
-			V3 = new Road("V3", 1), V4 = new Road("V4", 1), V5 = new Road("V5", 2),
-			H1 = new Road("H1", 2), H2 = new Road("H2", 1), H3 = new Road("H3", 1), 
-			H4 = new Road("H4", 1), H5 = new Road("H5", 1);*/
+	// ======================================================
+	// Road Definitions
+	// ======================================================	
+	
 	public static Road ENTRY = new Road("ENTRY", 0),
 					   AV0 = new Road("AV0", 285),
 					   AV1 = new Road("AV1", 100),
@@ -110,9 +100,10 @@ public class Map {
 					   CH11 = new Road("CH11", 180),
 					   CH12 = new Road("CH12", 90);
 							 
-	/*****************************************************************************/
+	// ======================================================
+	// Goal List
+	// ======================================================
 	
-	/** GOAL LIST *****************************************************************/
 	// Every goal in the map
 	public static Goal START = new Goal("START", Map.AH0);
 	public static Goal END = new Goal("END", Map.AH0);
@@ -126,29 +117,12 @@ public class Map {
 	public static Goal G8 = new Goal("G8", Map.CH3);
 	public static Goal G9 = new Goal("G9", Map.CV2);
 	public static int goalNum = 4;
-	/*****************************************************************************/
 	
-	/** MAP Generator ************************************************************/
-	// Sets the actions available in each road
-	static {
-		/*V1.setActions(a(TR, H1));
-		V2.setActions(a(TL, H2));
-		V3.setActions(a(TR, H4));
-		V4.setActions(a(GS, V3));
-		V5.setActions(a(TR, H5));
-		
-		H1.setActions(a(TL, V3));
-		H2.setActions(a(TR, V1));
-		H3.setActions(a(GS, H2), a(F, V2));
-		H4.setActions(a(TR, V5));
-		H5.setActions(a(GS, H3), a(TR, V4));
-		
-		G1 = new Goal("G1", Map.V1);
-		G2 = new Goal("G2", Map.H4);
-		G3 = new Goal("G3", Map.V5); 
-		START = new Goal("START", Map.V2);
-		END = new Goal("END", Map.V2);*/
-		
+	// ======================================================
+	// Map Initialization
+	// ======================================================
+	
+	static {		
 		//Section A
 		AH0.setActions(a(TL, AV0));
 		AH1.setActions(a(TL, AV1), a(GS, AH0));
@@ -227,7 +201,7 @@ public class Map {
 		
 	}
 	
-	/*****************************************************************************/
+	
 	
 	/**
 	 * Convenience function that creates a new Action object
@@ -238,6 +212,10 @@ public class Map {
 	private static Action a(int id, State r) {
 		return new Action(id, r);
 	}
+	
+	// ======================================================
+	// Class Logic
+	// ======================================================
 	
 	/**
 	 * Defines every action you can take at each goal
@@ -308,6 +286,5 @@ public class Map {
 		costMap.put(START.name, map);	
 		
 		return costMap;
-	}
-	
+	}	
 }

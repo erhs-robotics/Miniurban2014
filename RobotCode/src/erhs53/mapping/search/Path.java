@@ -9,9 +9,18 @@ import java.util.ArrayList;
  *
  */
 public class Path {
+	
+	// ======================================================
+	// Variables
+	// ======================================================
+	
 	public ArrayList<Action> actions;/** The actions that make up the path*/
 	public double cost;/**The cost of following the path*/
 
+	// ======================================================
+	// Constructor
+	// ======================================================
+	
 	public Path() {
 		actions = new ArrayList<>();
 	}
@@ -28,6 +37,10 @@ public class Path {
 		actions.addAll(a);
 		this.cost = cost;
 	}
+	
+	// ======================================================
+	// Getters and Setters
+	// ======================================================
 
 	/**
 	 * Returns the ith action in the path
@@ -138,6 +151,10 @@ public class Path {
 			System.out.println(": " + a.state.name);
 		}
 	}
+	
+	// ======================================================
+	// Search
+	// ======================================================
 
 	/**
 	 * Performs a cost first search

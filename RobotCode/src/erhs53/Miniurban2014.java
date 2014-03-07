@@ -2,8 +2,6 @@ package erhs53;
 
 import erhs53.mapping.Map;
 import erhs53.mapping.search.Action;
-import erhs53.mapping.search.Path;
-
 
 public class Miniurban2014 {
 	
@@ -42,7 +40,6 @@ public class Miniurban2014 {
 		actions[29] = new Action(3, Map.AH0);
 		actions[30] = new Action(0, Map.END);
 
-		Robot robot = new Robot();		
-	}
-	
+		Robot robot = new Robot();
+	}	
 }

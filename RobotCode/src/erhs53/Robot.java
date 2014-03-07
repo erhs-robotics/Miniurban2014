@@ -1,7 +1,6 @@
 package erhs53;
 
 import erhs53.utilities.ColorFilter;
-import erhs53.utilities.MathUtils;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.addon.ColorHTSensor;
@@ -9,13 +8,20 @@ import lejos.robotics.navigation.DifferentialPilot;
 
 public class Robot {
 	
+	// ======================================================
+	// Variables
+	// ======================================================
+	
 	public final NXTRegulatedMotor leftMotor, rightMotor;	
 	public final DifferentialPilot pilot;	
 	public final ColorHTSensor outerLeftColor, innerLeftColor;
 	public final ColorHTSensor outerRightColor;
 	public final ColorHTSensor innerRightColor;
-	public final ColorFilter colorFilter;
-	private float speed = 400;	
+	public final ColorFilter colorFilter;	
+	
+	// ======================================================
+	// Constructor
+	// ======================================================
 		
 	public Robot() {
 		leftMotor = new NXTRegulatedMotor(RoboMap.LEFT_MOTOR_PORT);
@@ -29,6 +35,10 @@ public class Robot {
 		setSpeed(RoboMap.MAXSPEED);		
 	}
 	
+	// ======================================================
+	// Class Logic
+	// ======================================================
+	
 	public double leftTachoCount() {
 		return leftMotor.getTachoCount();
 	}
@@ -41,26 +51,11 @@ public class Robot {
 		return (leftTachoCount() + rightTachoCount()) / 2;
 	}	
 	
-	/* Basic Driving Code ****************************************************/
-	public void tankDrive(double left, double right) {
-		left = MathUtils.clamp(left, -1, 1);
-		right = MathUtils.clamp(right, -1, 1);
-		
-		float leftDrive = (float) left;
-		float rightDrive = (float) right;
-	
-		leftMotor.setSpeed(speed * leftDrive);
-		rightMotor.setSpeed(speed * rightDrive);
-		leftMotor.backward();
-		rightMotor.backward();
-	}
-	
 	public void stop() {
 		pilot.stop();
 	}
 	
 	public void setSpeed(float speed) {
-		this.speed = speed;
 		this.pilot.setTravelSpeed(speed);
 	}	
 }

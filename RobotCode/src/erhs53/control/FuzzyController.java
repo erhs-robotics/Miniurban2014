@@ -5,34 +5,31 @@ import lejos.robotics.Color;
 import erhs53.RoboMap;
 import erhs53.Robot;
 import erhs53.control.MembershipFunction.ComponentFunction;
-import erhs53.utilities.BayesFilter;
 import erhs53.utilities.ColorFilter;
-import erhs53.utilities.BayesFilter.Label;
 
 public class FuzzyController {	
+	
+	// ======================================================
+	// Variables
+	// ======================================================
+	
 	private static final float MAX_SPEED = 500;
-	MembershipFunction white;
 	
+	// ======================================================
+	// Variables
+	// ======================================================
 	
-	public FuzzyController() {		
-		ComponentFunction whiteR = new ComponentFunction(RoboMap._WHITE_SIG[0], RoboMap._BLACK_SIG[0]);
-		ComponentFunction whiteG = new ComponentFunction(RoboMap._WHITE_SIG[1], RoboMap._BLACK_SIG[1]);
-		ComponentFunction whiteB = new ComponentFunction(RoboMap._WHITE_SIG[2], RoboMap._BLACK_SIG[2]);
-		white = new MembershipFunction(whiteR, whiteG, whiteB);
-		
-		
+	public FuzzyController() {
+			
 	}
 	
-	private void normalize(double[] set) {
-		double sum = 0;
-		for(double x:set) sum += x;
-		for(int i=0;i<set.length;i++)
-			set[i] /= sum;	
-	}
+	// ======================================================
+	// Class Logic
+	// ======================================================
 
 	public double getOutput(Color color) {
 		// membership functions
-		double whiteMembership = white.evaluateAve(color);
+		double whiteMembership = ColorFilter.white.evaluateAve(color);
 		
 		// crisp output
 		double out = 0;

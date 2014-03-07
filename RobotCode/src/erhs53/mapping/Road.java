@@ -1,6 +1,5 @@
 package erhs53.mapping;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import erhs53.mapping.search.Action;
 import erhs53.mapping.search.Path;
@@ -14,13 +13,22 @@ import erhs53.mapping.search.State;
  */
 
 
-public class Road extends State {	
+public class Road extends State {
+	
+	// ======================================================
+	// Variables
+	// ======================================================
+	
 	public double length; /** The length of the road */
 	public boolean slow; /** Is the road "slow"? (indicated by yellow markings) */
 	public boolean circle; /** Is the road part of a circle */
 	public double cost; /** The total cost of traversing the road */
 	private ArrayList<Action> actions;/** The Roads you can turn on to from this one*/	
 	private final static double TURN_COST = 20;
+	
+	// ======================================================
+	// Constructor
+	// ======================================================
 	
 	public Road(String name, double length) {
 		this.actions = new ArrayList<>();
@@ -32,7 +40,6 @@ public class Road extends State {
 	}
 	
 	public Road(String name, double length, boolean slow, boolean circle) {
-//		this(name, length, slow, circle);
 		this.name = name;
 		this.length = length;
 		this.slow = slow;
@@ -40,13 +47,17 @@ public class Road extends State {
 		this.cost = slow ? length * 2.0 : length;//CHANGE ME!!!!!! 2 is the wrong constant!!!!!!!!!
 	}
 	
+	// ======================================================
+	// Getters and Setters
+	// ======================================================
+	
 	/**
 	 * Convenience function that sets the road successors
 	 * @param theActions
 	 */
 	public void setActions(Action... theActions) {
 		this.actions = new ArrayList<Action>();
-		for(Action a : theActions) {			
+		for(Action a : theActions) {
 			this.actions.add(a);
 		}		
 	}
@@ -57,7 +68,7 @@ public class Road extends State {
 	 */
 	public ArrayList<Action> actions(Path path) {
 		return actions;
-	}
+	}	
 	
 	/**
 	 * The cost of going from the start of this Road to the end of
