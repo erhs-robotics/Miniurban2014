@@ -1,5 +1,6 @@
 package erhs53;
 
+import erhs53.mapping.Step;
 import erhs53.utilities.ColorFilter;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
@@ -38,6 +39,10 @@ public class Robot {
 	// ======================================================
 	// Class Logic
 	// ======================================================
+	
+	public void followSteps(Step[] steps) {
+		
+	}
 	
 	public double leftTachoCount() {
 		return leftMotor.getTachoCount();

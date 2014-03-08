@@ -1,7 +1,5 @@
 package erhs53.utilities;
 
-import java.util.ArrayList;
-
 import erhs53.RoboMap;
 import erhs53.control.MembershipFunction;
 import erhs53.control.MembershipFunction.ComponentFunction;

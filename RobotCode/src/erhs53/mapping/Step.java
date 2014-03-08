@@ -5,12 +5,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.util.LinkedList;
 
 import erhs53.utilities.StringUtils;
 
-public abstract class Step implements Serializable {
+public abstract class Step{
 	public String name;
 	
 	public static final Step[] loadSteps(String file) throws IOException {

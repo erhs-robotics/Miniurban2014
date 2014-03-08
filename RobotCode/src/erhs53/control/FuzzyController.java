@@ -2,9 +2,7 @@ package erhs53.control;
 
 import lejos.nxt.comm.RConsole;
 import lejos.robotics.Color;
-import erhs53.RoboMap;
 import erhs53.Robot;
-import erhs53.control.MembershipFunction.ComponentFunction;
 import erhs53.utilities.ColorFilter;
 
 public class FuzzyController {	
