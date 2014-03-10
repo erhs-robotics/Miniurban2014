@@ -34,12 +34,10 @@ public class MathUtils {
 		return min;
 	}
 	
-	public static double arrayAve(int[] array) {
+	public static double mean(int[] data) {
 		double sum = 0;
-		for(int i = 0; i < array.length; i++) {
-			sum += array[i];
-		}
-		return sum / (double)array.length;
+		for(int x : data) sum += x;
+		return sum / data.length;
 	}
 	
 	public static double map(double x, double in_min, double in_max, double out_min, double out_max) {

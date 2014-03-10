@@ -17,7 +17,7 @@ public abstract class Step{
 
 		InputStream is = new FileInputStream(new File(file));
 		DataInputStream din = new DataInputStream(is);
-		StringBuffer strBuffer = new StringBuffer();
+		StringBuffer strBuffer = new StringBuffer();		
 
 		while (is.available() > 3) { // at least 4 bytes left to read
 			// Read a line from the file
