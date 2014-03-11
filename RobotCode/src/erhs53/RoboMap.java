@@ -1,6 +1,7 @@
 package erhs53;
 
 import lejos.nxt.MotorPort;
+import lejos.nxt.Settings;
 
 public class RoboMap {	
 	public static MotorPort LEFT_MOTOR_PORT   = MotorPort.B;
@@ -14,12 +15,20 @@ public class RoboMap {
 	public static final long STOP_WAIT_TIME   = 1;
 	public static final long PARK_WAIT_TIME   = 5;
 	
-	public static final float[] WHITE_SIG  = new float[] {250.4f, 255, 255};
-	public static final float[] GREEN_SIG  = new float[] {26, 77.8f, 65};
-	public static final float[] YELLOW_SIG = new float[] {0, 0, 0};
-	public static final float[] RED_SIG    = new float[] {156.4f, 40.8f, 26};
-	public static final float[] BLUE_SIG   = new float[] {0, 0, 0};
-	public static final float[] BLACK_SIG  = new float[] {23.2f, 30.2f, 24.8f};
+	public static final float[] WHITE_SIG  = getSig("white");
+	public static final float[] GREEN_SIG  = getSig("green");
+	public static final float[] YELLOW_SIG = getSig("yellow");
+	public static final float[] RED_SIG    = getSig("red");
+	public static final float[] BLUE_SIG   = getSig("blue");
+	public static final float[] BLACK_SIG  = getSig("black");
 	
 	public static final double[] PARK_COUNTS  = {0, 686.5, 1378.0, 2114.5, 0};
+	
+	private static float[] getSig(String name) {
+		float r = Float.parseFloat(Settings.getProperty(name+".r", "0"));
+		float g = Float.parseFloat(Settings.getProperty(name+".g", "0"));
+		float b = Float.parseFloat(Settings.getProperty(name+".b", "0"));
+		
+		return new float[]{r, g, b};
+	}
 }

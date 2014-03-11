@@ -1,7 +1,9 @@
 package erhs53;
 
 import java.io.IOException;
+
 import lejos.nxt.Button;
+import lejos.nxt.Settings;
 import lejos.nxt.comm.RConsole;
 import lejos.robotics.Color;
 import lejos.util.TextMenu;
@@ -21,45 +23,47 @@ public class Miniurban2014 {
 			System.out.println("Failed to read map!");
 			System.out.println(e.getMessage());
 			return;
-		}		
+		}
 		robot.followSteps(steps);
 	}
 
 	private static void calibrateColors() {
 		RConsole.openBluetooth(0);
-		int[] red = new int[5];
-		int[] green = new int[5];
-		int[] blue = new int[5];
-		
-		RConsole.println("Ready");
-		Button.waitForAnyPress();
-		for (int i = 0; i < 5; i++) {
-			Color color = robot.outerRightColor.getColor();
-			red[i] = color.getRed();
-			green[i] = color.getGreen();
-			blue[i] = color.getBlue();
-			RConsole.println(red[i] + ", " + green[i] + ", " + blue[i]);
-			Button.waitForAnyPress();
+		String[] colors = new String[] { "white", "black", "green", "blue",
+				"red", "yellow" };
 
+		for (String name : colors) {
+
+			int[] red = new int[5];
+			int[] green = new int[5];
+			int[] blue = new int[5];
+
+			RConsole.println("Ready");
+			Button.waitForAnyPress();
+			for (int i = 0; i < 5; i++) {
+				Color color = robot.outerRightColor.getColor();
+				red[i] = color.getRed();
+				green[i] = color.getGreen();
+				blue[i] = color.getBlue();
+				RConsole.println(red[i] + ", " + green[i] + ", " + blue[i]);
+				Button.waitForAnyPress();
+			}
+
+			String meanRed = "" + MathUtils.mean(red);
+			String meanGreen = "" + MathUtils.mean(green);
+			String meanBlue = "" + MathUtils.mean(blue);
+			Settings.setProperty(name + ".r", meanRed);
+			Settings.setProperty(name + ".g", meanGreen);
+			Settings.setProperty(name + ".b", meanBlue);
 		}
 
-		RConsole.println("RED:");
-		RConsole.println("Mean: " + MathUtils.mean(red));
-		RConsole.println("----------------------------");
-
-		RConsole.println("GREEN:");
-		RConsole.println("Mean: " + MathUtils.mean(green));
-		RConsole.println("----------------------------");
-
-		RConsole.println("BLUE:");
-		RConsole.println("Mean: " + MathUtils.mean(blue));
-		RConsole.println("----------------------------");
-		RConsole.close();
-
+		System.out.println("Calibration Successful");
+		System.out.println("System must now reboot...");
+		System.out.println("Press any key");
 	}
 
 	private static void testColorDetection() {
-		RConsole.openBluetooth(0);		
+		RConsole.openBluetooth(0);
 
 		while (Button.readButtons() != Button.ID_ENTER) {
 			Color c = robot.outerRightColor.getColor();
@@ -80,7 +84,7 @@ public class Miniurban2014 {
 			Step.loadSteps("steps.info");
 			RConsole.println("Steps loaded successfully!");
 		} catch (IOException e) {
-			System.out.println("Failed to load steps!");			
+			System.out.println("Failed to load steps!");
 		}
 		Button.waitForAnyPress();
 	}
@@ -100,7 +104,7 @@ public class Miniurban2014 {
 				break;
 			case 1:
 				calibrateColors();
-				break;
+				return;
 			case 2:
 				testColorDetection();
 				break;
@@ -109,7 +113,7 @@ public class Miniurban2014 {
 				break;
 			case 4:
 				testStepLoader();
-				break;			
+				break;
 			}
 		} while (option != 5);
 	}

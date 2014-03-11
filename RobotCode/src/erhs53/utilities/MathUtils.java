@@ -34,8 +34,8 @@ public class MathUtils {
 		return min;
 	}
 	
-	public static double mean(int[] data) {
-		double sum = 0;
+	public static float mean(int[] data) {
+		float sum = 0;
 		for(int x : data) sum += x;
 		return sum / data.length;
 	}
