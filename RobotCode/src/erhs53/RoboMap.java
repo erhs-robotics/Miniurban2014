@@ -1,5 +1,6 @@
 package erhs53;
 
+import erhs53.utilities.RobotSettings;
 import lejos.nxt.MotorPort;
 import lejos.nxt.Settings;
 
@@ -25,9 +26,9 @@ public class RoboMap {
 	public static final double[] PARK_COUNTS  = {0, 686.5, 1378.0, 2114.5, 0};
 	
 	private static float[] getSig(String name) {
-		float r = Float.parseFloat(Settings.getProperty(name+".r", "0"));
-		float g = Float.parseFloat(Settings.getProperty(name+".g", "0"));
-		float b = Float.parseFloat(Settings.getProperty(name+".b", "0"));
+		float r = RobotSettings.getFloatSetting(name+".r", 0);
+		float g = RobotSettings.getFloatSetting(name+".g", 0);
+		float b = RobotSettings.getFloatSetting(name+".b", 0);
 		
 		return new float[]{r, g, b};
 	}
