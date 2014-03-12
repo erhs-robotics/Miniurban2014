@@ -12,6 +12,7 @@ import lejos.nxt.comm.RConsole;
 import lejos.robotics.Color;
 import lejos.util.TextMenu;
 import erhs53.control.FuzzyController;
+import erhs53.control.MembershipFunction;
 import erhs53.mapping.Step;
 import erhs53.utilities.ColorFilter;
 import erhs53.utilities.Console;
@@ -22,7 +23,6 @@ public class Miniurban2014 {
 	private static Robot robot;
 
 	private static void runProgram() {
-		
 		Step[] steps;
 		try {
 			steps = Step.loadSteps("steps.info");
@@ -34,12 +34,16 @@ public class Miniurban2014 {
 		robot.followSteps(steps);
 	}
 
-	private static void calibrateColors() {
-		//RConsole.openBluetooth(0);
+	private static void calibrateColors() throws InterruptedException {
+		// RConsole.openBluetooth(0);
 		String[] colors = new String[] { "white", "black", "green", "blue",
 				"red", "yellow" };
 
-		for (String name : colors) {
+		TextMenu menu = new TextMenu(colors, 1, "Calibrate Color");
+		int index;
+		while ((index = menu.select()) != -1) {
+			LCD.clear();
+			String name = colors[index];
 
 			int[] red = new int[5];
 			int[] green = new int[5];
@@ -62,6 +66,8 @@ public class Miniurban2014 {
 			RobotSettings.setSetting(name + ".r", meanRed);
 			RobotSettings.setSetting(name + ".g", meanGreen);
 			RobotSettings.setSetting(name + ".b", meanBlue);
+			Console.println("Calibrated " + name);
+			Thread.sleep(1000);
 		}
 
 		Console.println("Calibration Successful");
@@ -71,18 +77,39 @@ public class Miniurban2014 {
 	}
 
 	private static void testColorDetection() {
-		//RConsole.openBluetooth(0);
-		
+		String[] colors = new String[] { "white", "green", "blue",
+				"red", "yellow"};
 
-		while (Button.readButtons() != Button.ID_ESCAPE) {
-			Color c = robot.outerRightColor.getColor();
-			int value = (int)(ColorFilter.white.evaluateAve(c) * 100);
-			
+		TextMenu menu = new TextMenu(colors, 1, "Test Color");
 
-			Console.println("Value: " + value);
-			
+		int index;
+		while ((index = menu.select()) != -1) {
+			MembershipFunction colorFunction = null;
+			switch(index) {
+			case 0:
+				colorFunction = ColorFilter.white;
+				break;
+			case 1:
+				colorFunction = ColorFilter.green;
+				break;
+			case 2:
+				colorFunction = ColorFilter.blue;
+				break;
+			case 3:
+				colorFunction = ColorFilter.red;
+				break;
+			case 4:
+				colorFunction = ColorFilter.yellow;
+				break;
+			}
+			while (Button.readButtons() != Button.ID_ESCAPE) {
+				Color c = robot.outerRightColor.getColor();
+				int value = (int) (colorFunction.evaluateAve(c) * 100);
+
+				Console.println("Value: " + value);
+
+			}
 		}
-		RConsole.close();
 	}
 
 	private static void testFuzzyController() {
@@ -97,18 +124,19 @@ public class Miniurban2014 {
 			Thread.sleep(1000);
 		} catch (IOException e) {
 			System.out.println("Failed to load steps!");
-		} catch (InterruptedException e) {	}
+		} catch (InterruptedException e) {
+		}
 		Button.waitForAnyPress();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		robot = new Robot();
 
-		String[] items = new String[] { "Run program!", "Calibrate Colors",
-				"Test Color Detection", "Test Fuzzy Controller",
-				"Test Step Loader", "Exit" };
+		String[] items = new String[] { "Run program!", "Calibrate Color",
+				"Test Color", "Test Controller",
+				"Test Loader" };
 		TextMenu menu = new TextMenu(items, 1, "Miniurban 2014");
-		
+
 		int option;
 		do {
 			LCD.clear();
@@ -131,6 +159,6 @@ public class Miniurban2014 {
 				testStepLoader();
 				break;
 			}
-		} while (option != 5);
+		} while (option != -1);
 	}
 }
