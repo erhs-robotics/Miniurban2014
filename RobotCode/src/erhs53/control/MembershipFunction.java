@@ -19,7 +19,11 @@ public class MembershipFunction {
 		}
 		
 		public float evaluate(float x) {
-			float value = 1 / (color1 - color0) * (x - color0);
+			float value;
+			if(x <= color1)
+				value = 1f / (color1 - color0) * (x - color0);
+			else
+				value = -1f / (color1 - color0) * (x - color1) + 1;
 			return MathUtils.clamp(value, 0, 1);
 		}
 	}
@@ -52,6 +56,8 @@ public class MembershipFunction {
 	
 	public float evaluateAve(Color color) {
 		float[] components = getComponents(color);
-		return (components[0] + components[1] + components[2]) / 3;
+		float val = (components[0] + components[1] + components[2]) / 3;
+		
+		return val >= .1 ? val : 0;
 	}
 }

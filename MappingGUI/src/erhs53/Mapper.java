@@ -20,6 +20,7 @@ public class Mapper {
 				Road road = (Road) state;
 				fileOut.print("road,");
 				fileOut.print(road.name + ",");
+				fileOut.print(a.type + ",");
 				fileOut.print(road.slow + ",");
 				fileOut.println(road.circle);
 			} else if (state instanceof Goal) {

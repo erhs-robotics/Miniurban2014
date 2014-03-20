@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
 
+import erhs53.mapping.RoadStep.Direction;
 import erhs53.utilities.StringUtils;
 
 public abstract class Step{
@@ -36,9 +37,12 @@ public abstract class Step{
 			// Translate the String into a Step object
 			if(parts[0].equals("road")) {
 				String name = parts[1];
-				boolean slow = Boolean.parseBoolean(parts[2]);
-				boolean circle = Boolean.parseBoolean(parts[3]);
-				steps.add(new RoadStep(name, slow, circle));
+				int i = Integer.parseInt(parts[2]);
+				//System.out.println(i);
+				Direction dir = Direction.values()[i];
+				boolean slow = Boolean.parseBoolean(parts[3]);
+				boolean circle = Boolean.parseBoolean(parts[4]);
+				steps.add(new RoadStep(name, dir, slow, circle));
 			} else if(parts[0].equals("goal")) {
 				String name = parts[1];
 				int space = Integer.parseInt(parts[2]);

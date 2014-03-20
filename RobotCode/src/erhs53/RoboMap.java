@@ -16,6 +16,8 @@ public class RoboMap {
 	public static final long STOP_WAIT_TIME   = 1;
 	public static final long PARK_WAIT_TIME   = 5;
 	
+	// Color Signatures
+	// 		a signature is a 3 tuple representing the mean r, g, and b values for a color
 	public static final float[] WHITE_SIG  = getSig("white");
 	public static final float[] GREEN_SIG  = getSig("green");
 	public static final float[] YELLOW_SIG = getSig("yellow");
