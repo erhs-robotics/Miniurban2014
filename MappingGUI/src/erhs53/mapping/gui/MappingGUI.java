@@ -3,12 +3,11 @@ package erhs53.mapping.gui;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,10 +17,12 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import erhs53.mapping.*;
+import erhs53.mapping.Goal;
+import erhs53.mapping.Map;
 import erhs53.mapping.search.Action;
 import erhs53.mapping.search.Path;
 
@@ -38,6 +39,9 @@ public class MappingGUI extends JFrame {
 	
 	HashMap<String, Goal> goals;
 	HashMap<String, RoadPos> roads;
+	
+	Goal[] goalList;
+	JButton[] labels = new JButton[10];
 	
 	ArrayList<ArrayList<RoadPos>> paths = new ArrayList<ArrayList<RoadPos>>();
 	
@@ -188,17 +192,46 @@ public class MappingGUI extends JFrame {
 		setVisible(true);
 	}
 	
+	private class LabelListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			sketchPath(Integer.parseInt(e.getActionCommand()));
+		}
+	}
+	
+	public void resetLabels() {
+		LabelListener ll = new LabelListener();
+		for(int i=0; i<labels.length; i++) {
+			labels[i] = new JButton();
+			labels[i].setVisible(false);
+			labels[i].setActionCommand(Integer.toString(i));
+			labels[i].addActionListener(ll);
+		}
+	}
+	
 	public void createGUI() {
+		JPanel labelPanel = new JPanel();
+		labelPanel.setLayout(new FlowLayout());
+		for(int i=0; i<labels.length; i++) {
+			labels[i] = new JButton();
+			labels[i].setVisible(false);
+			labels[i].setActionCommand(Integer.toString(i));
+			LabelListener ll = new LabelListener();
+			labels[i].addActionListener(ll);
+			labelPanel.add(labels[i]);
+		}
+		
 		controlPanel = new JPanel();
 		final JTextField goalsField = new JTextField(20);
 		JButton sketchButton = new JButton("Sketch Path");
 		sketchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String goalString = goalsField.getText();
-				Goal[] goalList = new Goal[goalString.split(", ").length];
+				goalList = new Goal[goalString.split(", ").length];
 				for(int i=0; i<goalList.length; i++) {
 					goalList[i] = goals.get(goalString.split(", ")[i]);
 					String g = goalString.split(", ")[i];
+					labels[i].setText(g);
+					labels[i].setVisible(true);
 					System.out.println(g);
 					goals.get(g).set(1, Map.PL);
 				}
@@ -215,6 +248,7 @@ public class MappingGUI extends JFrame {
 		controlPanel.add(sketchButton);
 		
 		this.setLayout(new BorderLayout());
+		this.add(labelPanel, BorderLayout.NORTH);
 		this.add(controlPanel, BorderLayout.SOUTH);
 		this.add(imagePanel, BorderLayout.CENTER);
 	}
@@ -265,6 +299,7 @@ public class MappingGUI extends JFrame {
 	}
 	
 	public void sketchPath(int path) {
+		System.out.println("Sketching paths[" + path + "]");
 		colorIndex = 0; 
 		screenImage.getGraphics().drawImage(mapImage, 0, 0, null);
 		Graphics2D g = (Graphics2D) screenImage.getGraphics();
