@@ -134,9 +134,8 @@ public class Miniurban2014 {
 
 	public static void main(String[] args) throws InterruptedException {
 		RConsole.openBluetooth(0);
-		RConsole.println("White: " + Arrays.toString(RoboMap.WHITE_SIG));
-		RConsole.println("Black: " + Arrays.toString(RoboMap.BLACK_SIG));
-		RConsole.println("Yellow: " + Arrays.toString(RoboMap.YELLOW_SIG));
+		Console.println(Arrays.toString(RoboMap.BLUE_SIG));
+		Console.println(Arrays.toString(RoboMap.BLACK_SIG));
 		robot = new Robot();
 
 		String[] items = new String[] { "Run program!", "Calibrate Color",

@@ -57,15 +57,15 @@ public class MathUtils {
 	}
 
 	public static float max(float... x) {
-		float max = 0;
+		int max_i = 0;
 		
 		for(int i=1;i<x.length;i++) {
-			if(x[i] > max) {
-				max = i;			
+			if(x[i] > x[max_i]) {
+				max_i = i;			
 			}
 		}
 		
-		return max;
+		return x[max_i];
 	}
 
 }
