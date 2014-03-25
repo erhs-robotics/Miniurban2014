@@ -8,6 +8,7 @@ import erhs53.mapping.GoalStep;
 import erhs53.mapping.RoadStep;
 import erhs53.mapping.Step;
 import erhs53.utilities.ColorFilter;
+import erhs53.utilities.ColorHTSensorX;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.addon.ColorHTSensor;
@@ -21,9 +22,8 @@ public class Robot {
 	
 	public final NXTRegulatedMotor leftMotor, rightMotor;	
 	public final DifferentialPilot pilot;	
-	public final ColorHTSensor outerLeftColor, innerLeftColor;
-	public final ColorHTSensor outerRightColor;
-	public final ColorHTSensor innerRightColor;
+	public final ColorHTSensorX outerLeftColor, innerLeftColor;
+	public final ColorHTSensorX outerRightColor, innerRightColor;
 	public final ColorFilter colorFilter;
 	public final FuzzyController contoller;
 	
@@ -35,10 +35,10 @@ public class Robot {
 		leftMotor = new NXTRegulatedMotor(RoboMap.LEFT_MOTOR_PORT);
 		rightMotor = new NXTRegulatedMotor(RoboMap.RIGHT_MOTOR_PORT);
 		pilot = new DifferentialPilot(RoboMap.WHEELDIAMETER, RoboMap.TRACKWIDTH, leftMotor, rightMotor);
-		outerLeftColor = new ColorHTSensor(SensorPort.S4);
-		innerLeftColor = new ColorHTSensor(SensorPort.S3);
-		outerRightColor = new ColorHTSensor(SensorPort.S1);
-		innerRightColor = new ColorHTSensor(SensorPort.S2);
+		outerLeftColor = new ColorHTSensorX(SensorPort.S4);
+		innerLeftColor = new ColorHTSensorX(SensorPort.S3);
+		outerRightColor = new ColorHTSensorX(SensorPort.S1);
+		innerRightColor = new ColorHTSensorX(SensorPort.S2);
 		colorFilter = new ColorFilter();
 		contoller = new FuzzyController(this);
 		setSpeed(RoboMap.MAXSPEED);		

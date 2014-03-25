@@ -16,7 +16,9 @@ public class FuzzyController {
 	// Variables
 	// ======================================================
 	
-	private static final float MAX_SPEED = 500;
+	private static final float MAX_SPEED  = 600;
+	private static final float SLOW_SPEED = 370;
+	private static final float PARK_SPEED = 500;
 	private final Robot robot;
 	
 	
@@ -77,7 +79,7 @@ public class FuzzyController {
 		return out;
 	}
 	
-	public void follow(ColorHTSensor outerSensor, ColorHTSensor innerSensor, Direction dir) {
+	public void follow(ColorHTSensor outerSensor, ColorHTSensor innerSensor, Direction dir, float speed) {
 		double output;
 		if(innerSensor != null)
 			output = getOutput(outerSensor.getColor(), innerSensor.getColor());
@@ -87,8 +89,8 @@ public class FuzzyController {
 		
 		if(output == output) {// make sure output is a number
 			int sign = (dir == Direction.right) ? 1 : -1;
-			robot.leftMotor.setSpeed(MAX_SPEED - (float)output * sign);	
-			robot.rightMotor.setSpeed(MAX_SPEED + (float)output * sign);
+			robot.leftMotor.setSpeed(speed - (float)output * sign);	
+			robot.rightMotor.setSpeed(speed + (float)output * sign);
 		}
 		robot.leftMotor.forward();
 		robot.rightMotor.forward();
@@ -99,7 +101,7 @@ public class FuzzyController {
 		ColorHTSensor innerSensor = (dir == Direction.left) ? robot.innerLeftColor : robot.innerRightColor;
 		
 		while(true) {
-			follow(outerSensor, innerSensor, dir);
+			follow(outerSensor, innerSensor, dir, MAX_SPEED);
 		}
 	}
 	
@@ -111,16 +113,17 @@ public class FuzzyController {
 		ColorHTSensor outerSensor = (dir == Direction.left) ? robot.outerLeftColor : robot.outerRightColor;
 		ColorHTSensor innerSensor = (dir == Direction.left) ? robot.innerLeftColor : robot.innerRightColor;
 		ColorFilter.Color searchColor = ColorFilter.Color.WHITE;
-		for(int i=0;i<space*2 - 1;) {
-			follow(innerSensor, null, dir);
-			//if(ColorFilter.classify(outerSensor.getColor()) == searchColor) {
-				//i++;
-				//searchColor = (searchColor == ColorFilter.Color.WHITE) ? 
-				//				ColorFilter.Color.BLACK : ColorFilter.Color.WHITE;
-			//}
+		for(int i=0;i<space*2 - 2;) {
+			follow(innerSensor, null, dir, PARK_SPEED);
+			if(ColorFilter.classify(outerSensor.getColor()) == searchColor) {
+				i++;
+				searchColor = (searchColor == ColorFilter.Color.WHITE) ? 
+								ColorFilter.Color.BLACK : ColorFilter.Color.WHITE;
+			}
 			Console.println("" + i);			
 		}
-		
+		robot.leftMotor.setSpeed(0);
+		robot.rightMotor.setSpeed(0);
 		robot.leftMotor.stop();
 		robot.rightMotor.stop();	
 	}

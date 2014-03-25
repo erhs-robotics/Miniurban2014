@@ -169,7 +169,7 @@ public class Miniurban2014 {
 
 	private static void testFuzzyController() {
 		FuzzyController controller = new FuzzyController(robot);
-		controller.followLine(Direction.left);
+		controller.followLine(Direction.right);
 	}
 
 	private static void testStepLoader() {
