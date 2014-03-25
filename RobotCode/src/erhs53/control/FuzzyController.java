@@ -43,7 +43,7 @@ public class FuzzyController {
 		}		
 	}
 	
-	public double getOutput(Color primaryColor, Color secondaryColor) {
+	public double getOutput(Color primaryColor, Color secondaryColor, float speed) {
 		// membership functions
 		float pWhite = ColorFilter.white.evaluateAve(primaryColor);		
 		float pYellow = ColorFilter.yellow.evaluateAve(primaryColor);
@@ -57,10 +57,10 @@ public class FuzzyController {
 		float out = 0;
 		
 		// if see black, turn towards line
-		out += -100 * pBlack;		
+		out += -speed/5 * pBlack;		
 		
 		// if see white turn away from the line		
-		out +=  200 * curve(sfollowColor);
+		out +=  speed/3 * curve(sfollowColor);
 		
 		// if see green turn away from the line alot
 		//out +=  200 * greenMembership;
@@ -82,9 +82,9 @@ public class FuzzyController {
 	public void follow(ColorHTSensor outerSensor, ColorHTSensor innerSensor, Direction dir, float speed) {
 		double output;
 		if(innerSensor != null)
-			output = getOutput(outerSensor.getColor(), innerSensor.getColor());
+			output = getOutput(outerSensor.getColor(), innerSensor.getColor(), speed);
 		else
-			output = getOutput(outerSensor.getColor(), null);
+			output = getOutput(outerSensor.getColor(), null, speed);
 		//RConsole.println("Output: " + output);
 		
 		if(output == output) {// make sure output is a number
