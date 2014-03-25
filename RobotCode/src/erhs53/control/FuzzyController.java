@@ -41,61 +41,38 @@ public class FuzzyController {
 		}		
 	}
 	
-	// TODO combine getOutput into one function	
-	public double getOutput(Color color) {
+	public double getOutput(Color primaryColor, Color secondaryColor) {
 		// membership functions
-		float white = ColorFilter.white.evaluateAve(color);		
-		float yellow = ColorFilter.yellow.evaluateAve(color);
-		float blue = ColorFilter.blue.evaluateAve(color);
-		float followColor = MathUtils.max(white, yellow, blue);
-		float black = (1 - followColor);		
-		float green = ColorFilter.green.evaluateAve(color);
-		
+		float pWhite = ColorFilter.white.evaluateAve(primaryColor);		
+		float pYellow = ColorFilter.yellow.evaluateAve(primaryColor);
+		float pBlue = ColorFilter.blue.evaluateAve(primaryColor);
+		float pRed = ColorFilter.red.evaluateAve(primaryColor);		
+		float sfollowColor = MathUtils.max(pWhite, pYellow, pBlue, pRed);
+		float pBlack = (1 - sfollowColor);		
+		float pGreen = ColorFilter.green.evaluateAve(primaryColor);		
 		
 		// crisp output
 		float out = 0;
 		
 		// if see black, turn towards line
-		out += -100 * black;		
+		out += -100 * pBlack;		
 		
 		// if see white turn away from the line		
-		out +=  100 * followColor;
-		
-
-		return out;
-	}
-	
-	public double getOutput(Color outerColor, Color innerColor) {
-		// membership functions
-		float outerWhite = ColorFilter.white.evaluateAve(outerColor);		
-		float outerYellow = ColorFilter.yellow.evaluateAve(outerColor);
-		float outerBlue = ColorFilter.blue.evaluateAve(outerColor);
-		float outerRed = ColorFilter.red.evaluateAve(outerColor);
-		float outerFollowColor = MathUtils.max(outerWhite, outerYellow, outerBlue, outerRed);
-		float outerBlack = (1 - outerFollowColor);		
-		float outerGreen = ColorFilter.green.evaluateAve(outerColor);		
-		
-		float innerWhite = ColorFilter.white.evaluateAve(innerColor);
-		float innerYellow = ColorFilter.yellow.evaluateAve(innerColor);
-		float innerFollowColor = MathUtils.max(innerWhite, innerYellow);
-		float innerBlack = (1 - innerFollowColor);
-		
-		
-		// crisp output
-		float out = 0;
-		
-		// if see black, turn towards line
-		out += -100 * outerBlack;		
-		
-		// if see white turn away from the line		
-		out +=  200 * curve(outerFollowColor);
+		out +=  200 * curve(sfollowColor);
 		
 		// if see green turn away from the line alot
 		//out +=  200 * greenMembership;
 		
 		// if see white on the second color sensor, turn away alot alot
 		//out += 300 * innerFollowColor;
-		Console.println("" + outerFollowColor);
+		Console.println("" + sfollowColor);
+		
+		if(secondaryColor != null) {
+			float sWhite = ColorFilter.white.evaluateAve(secondaryColor);
+			float sYellow = ColorFilter.yellow.evaluateAve(secondaryColor);
+			float sFollowColor = MathUtils.max(sWhite, sYellow);
+			float innerBlack = (1 - sFollowColor);
+		}
 
 		return out;
 	}
@@ -105,7 +82,7 @@ public class FuzzyController {
 		if(innerSensor != null)
 			output = getOutput(outerSensor.getColor(), innerSensor.getColor());
 		else
-			output = getOutput(outerSensor.getColor());
+			output = getOutput(outerSensor.getColor(), null);
 		//RConsole.println("Output: " + output);
 		
 		if(output == output) {// make sure output is a number
