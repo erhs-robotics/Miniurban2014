@@ -40,13 +40,30 @@ public class Robot {
 		outerRightColor = new ColorHTSensor(SensorPort.S1);
 		innerRightColor = new ColorHTSensor(SensorPort.S2);
 		colorFilter = new ColorFilter();
-		contoller = new FuzzyController();
+		contoller = new FuzzyController(this);
 		setSpeed(RoboMap.MAXSPEED);		
+		
+		
+		
 	}
 	
 	// ======================================================
 	// Class Logic
 	// ======================================================
+	
+	public void initBlackLevel() {
+		outerRightColor.initBlackLevel();		
+		innerRightColor.initBlackLevel();		
+		outerLeftColor.initBlackLevel();		
+		innerLeftColor.initBlackLevel();
+	}
+	
+	public void initWhiteBalance() throws InterruptedException {
+		outerRightColor.initWhiteBalance();		
+		innerRightColor.initWhiteBalance();
+		outerLeftColor.initWhiteBalance();		
+		innerLeftColor.initWhiteBalance();		
+	}
 	
 	public void followSteps(Step[] steps) {		
 		for(int i=0;i<steps.length;i++) {

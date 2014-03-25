@@ -17,13 +17,15 @@ public class FuzzyController {
 	// ======================================================
 	
 	private static final float MAX_SPEED = 500;
+	private final Robot robot;
+	
 	
 	// ======================================================
-	// Variables
+	// Constructor
 	// ======================================================
 	
-	public FuzzyController() {
-			
+	public FuzzyController(Robot robot) {
+		this.robot = robot;			
 	}
 	
 	// ======================================================
@@ -31,18 +33,47 @@ public class FuzzyController {
 	// ======================================================
 	
 	private float curve(float x) {
-		if(x == 0) return 0;
-		return x;//(float)(Math.log(x) / Math.log(10) + 1);
+		float p = 0.8f;
+		if(x > p) {
+			return MathUtils.map(x, p, 1f, 0.8f, 1f);
+		} else {
+			return MathUtils.map(x, 0f, p, 0f, 0.5f);
+		}		
 	}
+	
+	// TODO combine getOutput into one function	
+	public double getOutput(Color color) {
+		// membership functions
+		float white = ColorFilter.white.evaluateAve(color);		
+		float yellow = ColorFilter.yellow.evaluateAve(color);
+		float blue = ColorFilter.blue.evaluateAve(color);
+		float followColor = MathUtils.max(white, yellow, blue);
+		float black = (1 - followColor);		
+		float green = ColorFilter.green.evaluateAve(color);
+		
+		
+		// crisp output
+		float out = 0;
+		
+		// if see black, turn towards line
+		out += -100 * black;		
+		
+		// if see white turn away from the line		
+		out +=  100 * followColor;
+		
 
+		return out;
+	}
+	
 	public double getOutput(Color outerColor, Color innerColor) {
 		// membership functions
 		float outerWhite = ColorFilter.white.evaluateAve(outerColor);		
 		float outerYellow = ColorFilter.yellow.evaluateAve(outerColor);
 		float outerBlue = ColorFilter.blue.evaluateAve(outerColor);
-		float outerFollowColor = MathUtils.max(outerWhite, outerYellow, outerBlue);
+		float outerRed = ColorFilter.red.evaluateAve(outerColor);
+		float outerFollowColor = MathUtils.max(outerWhite, outerYellow, outerBlue, outerRed);
 		float outerBlack = (1 - outerFollowColor);		
-		float outerGreen = ColorFilter.green.evaluateAve(outerColor);
+		float outerGreen = ColorFilter.green.evaluateAve(outerColor);		
 		
 		float innerWhite = ColorFilter.white.evaluateAve(innerColor);
 		float innerYellow = ColorFilter.yellow.evaluateAve(innerColor);
@@ -54,38 +85,73 @@ public class FuzzyController {
 		float out = 0;
 		
 		// if see black, turn towards line
-		out += -100 * curve(outerBlack);		
+		out += -100 * outerBlack;		
 		
 		// if see white turn away from the line		
-		out +=  100 * curve(outerFollowColor);
+		out +=  200 * curve(outerFollowColor);
 		
 		// if see green turn away from the line alot
 		//out +=  200 * greenMembership;
 		
 		// if see white on the second color sensor, turn away alot alot
 		//out += 300 * innerFollowColor;
-		
-		Console.print("W: " + (int)(outerWhite * 100) + ", Y: " + (int)(outerYellow * 100));
-		Console.println(", Out: " + out);
+		Console.println("" + outerFollowColor);
 
 		return out;
 	}
 	
-	public void followLine(Robot robot, Direction dir) {
-		ColorHTSensor outerSensor, innerSensor;
-		outerSensor = (dir == Direction.left) ? robot.outerLeftColor : robot.outerRightColor;
-		innerSensor = (dir == Direction.left) ? robot.innerLeftColor : robot.innerRightColor;
+	public void follow(ColorHTSensor outerSensor, ColorHTSensor innerSensor, Direction dir) {
+		double output;
+		if(innerSensor != null)
+			output = getOutput(outerSensor.getColor(), innerSensor.getColor());
+		else
+			output = getOutput(outerSensor.getColor());
+		//RConsole.println("Output: " + output);
+		
+		if(output == output) {// make sure output is a number
+			int sign = (dir == Direction.right) ? 1 : -1;
+			robot.leftMotor.setSpeed(MAX_SPEED - (float)output * sign);	
+			robot.rightMotor.setSpeed(MAX_SPEED + (float)output * sign);
+		}
+		robot.leftMotor.forward();
+		robot.rightMotor.forward();
+	}
+	
+	public void followLine(Direction dir) {
+		ColorHTSensor outerSensor = (dir == Direction.left) ? robot.outerLeftColor : robot.outerRightColor;
+		ColorHTSensor innerSensor = (dir == Direction.left) ? robot.innerLeftColor : robot.innerRightColor;
 		
 		while(true) {
-			double output = getOutput(outerSensor.getColor(), innerSensor.getColor());
-			//RConsole.println("Output: " + output);
-			
-			if(output == output) {// make sure output is a number
-				robot.leftMotor.setSpeed(MAX_SPEED - (float)output);	
-				robot.rightMotor.setSpeed(MAX_SPEED + (float)output);
-			}
-			robot.leftMotor.forward();
-			robot.rightMotor.forward();
+			follow(outerSensor, innerSensor, dir);
 		}
 	}
-}
+	
+	// ======================================================
+	// Parking Logic
+	// ======================================================
+	
+	public void driveToSpace(int space, Direction dir) {
+		ColorHTSensor outerSensor = (dir == Direction.left) ? robot.outerLeftColor : robot.outerRightColor;
+		ColorHTSensor innerSensor = (dir == Direction.left) ? robot.innerLeftColor : robot.innerRightColor;
+		ColorFilter.Color searchColor = ColorFilter.Color.WHITE;
+		for(int i=0;i<space*2 - 1;) {
+			follow(innerSensor, null, dir);
+			//if(ColorFilter.classify(outerSensor.getColor()) == searchColor) {
+				//i++;
+				//searchColor = (searchColor == ColorFilter.Color.WHITE) ? 
+				//				ColorFilter.Color.BLACK : ColorFilter.Color.WHITE;
+			//}
+			Console.println("" + i);			
+		}
+		
+		robot.leftMotor.stop();
+		robot.rightMotor.stop();	
+	}
+	
+	public void park(Direction dir) {
+		// Drive until there is a blue line
+		// Find the correct space
+		// Park in the space
+		// Reverse out of park
+		// drive to the end of the road
+	}}

@@ -24,8 +24,8 @@ public class MembershipFunction {
 			if((x <= color1 && color1 > color0) || (x >= color1 && color1 < color0))
 				value = 1f / (color1 - color0) * (x - color0);
 			else
-				value = -1f / (color1 - color0) * (x - color1) + 1;
-			Console.println("x: " + x + ", val: " + value);
+				value = -1f / (color1 - color0) * (x - color1) + 1;	
+			
 			return MathUtils.clamp(value, 0, 1);
 		}
 	}
@@ -53,7 +53,7 @@ public class MembershipFunction {
 		result[0] = componentFunctions[0].evaluate(color.getRed());
 		result[1] = componentFunctions[1].evaluate(color.getGreen());
 		result[2] = componentFunctions[2].evaluate(color.getBlue());
-		Console.println("R: " + result[0] + "G: " + result[1] + "B: " + result[2]);
+		
 		return result;
 	}
 	
