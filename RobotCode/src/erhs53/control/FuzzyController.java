@@ -49,8 +49,8 @@ public class FuzzyController {
 		float pYellow = ColorFilter.yellow.evaluateAve(primaryColor);
 		float pBlue = ColorFilter.blue.evaluateAve(primaryColor);
 		float pRed = ColorFilter.red.evaluateAve(primaryColor);		
-		float sfollowColor = MathUtils.max(pWhite, pYellow, pBlue, pRed);
-		float pBlack = (1 - sfollowColor);		
+		float pFollowColor = MathUtils.max(pWhite, pYellow, pBlue, pRed);
+		float pBlack = (1 - pFollowColor);		
 		float pGreen = ColorFilter.green.evaluateAve(primaryColor);		
 		
 		// crisp output
@@ -60,14 +60,14 @@ public class FuzzyController {
 		out += -speed/5 * pBlack;		
 		
 		// if see white turn away from the line		
-		out +=  speed/3 * curve(sfollowColor);
+		out +=  speed/3 * curve(pFollowColor);
 		
 		// if see green turn away from the line alot
 		//out +=  200 * greenMembership;
 		
 		// if see white on the second color sensor, turn away alot alot
 		//out += 300 * innerFollowColor;
-		Console.println("" + sfollowColor);
+		Console.println("" + pFollowColor);
 		
 		if(secondaryColor != null) {
 			float sWhite = ColorFilter.white.evaluateAve(secondaryColor);
