@@ -6,15 +6,31 @@ import java.util.Iterator;
 import erhs53.control.FuzzyController;
 import erhs53.mapping.GoalStep;
 import erhs53.mapping.RoadStep;
+import erhs53.mapping.RoadStep.Direction;
 import erhs53.mapping.Step;
 import erhs53.utilities.ColorFilter;
 import erhs53.utilities.ColorHTSensorX;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.addon.ColorHTSensor;
+import lejos.robotics.Color;
 import lejos.robotics.navigation.DifferentialPilot;
 
 public class Robot {
+	
+	// ======================================================
+	// Constants
+	// ======================================================
+	
+	public static final double WHEELDIAMETER  = 13;
+	public static final double TRACKWIDTH     = 55;
+	public static final float MAX_SPEED  = 600;
+	public static final float SLOW_SPEED = 370;
+	public static final float PARK_SPEED = 500;
+	public static final float TURN_SPEED = 50; // In different units
+	public static final float NEAR_TURN_RADIUS = 40;
+	public static final float FAR_TURN_RADIUS = 60;
+	
 	
 	// ======================================================
 	// Variables
@@ -34,17 +50,13 @@ public class Robot {
 	public Robot() {
 		leftMotor = new NXTRegulatedMotor(RoboMap.LEFT_MOTOR_PORT);
 		rightMotor = new NXTRegulatedMotor(RoboMap.RIGHT_MOTOR_PORT);
-		pilot = new DifferentialPilot(RoboMap.WHEELDIAMETER, RoboMap.TRACKWIDTH, leftMotor, rightMotor);
+		pilot = new DifferentialPilot(WHEELDIAMETER, TRACKWIDTH, leftMotor, rightMotor);
 		outerLeftColor = new ColorHTSensorX(SensorPort.S4);
 		innerLeftColor = new ColorHTSensorX(SensorPort.S3);
 		outerRightColor = new ColorHTSensorX(SensorPort.S1);
 		innerRightColor = new ColorHTSensorX(SensorPort.S2);
 		colorFilter = new ColorFilter();
-		contoller = new FuzzyController(this);
-		setSpeed(RoboMap.MAXSPEED);		
-		
-		
-		
+		contoller = new FuzzyController(this);		
 	}
 	
 	// ======================================================
@@ -82,6 +94,22 @@ public class Robot {
 		}		
 	}	
 	
+	public void turn(Direction dir, Direction side) {
+		ColorHTSensor sensor = side == Direction.left ? outerLeftColor : outerRightColor;
+		float turnRadius = dir.equals(side) ? NEAR_TURN_RADIUS : FAR_TURN_RADIUS;
+		Color c;
+		pilot.setTravelSpeed(TURN_SPEED);
+		pilot.arcForward(turnRadius);
+		
+		do {
+			c = sensor.getColor();			
+		} while(ColorFilter.white.evaluateAve(c) > 0.6 && ColorFilter.yellow.evaluateAve(c) > 0.6);
+		
+		pilot.stop();		
+	}
+	
+	
+	
 	// ======================================================
 	// Getters and Setters
 	// ======================================================
@@ -100,9 +128,5 @@ public class Robot {
 	
 	public void stop() {
 		pilot.stop();
-	}
-	
-	public void setSpeed(float speed) {
-		this.pilot.setTravelSpeed(speed);
-	}
+	}	
 }

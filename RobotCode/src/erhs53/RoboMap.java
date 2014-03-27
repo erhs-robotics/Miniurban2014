@@ -5,16 +5,9 @@ import lejos.nxt.MotorPort;
 import lejos.nxt.Settings;
 
 public class RoboMap {	
+	
 	public static MotorPort LEFT_MOTOR_PORT   = MotorPort.B;
 	public static MotorPort RIGHT_MOTOR_PORT  = MotorPort.A;	
-	
-	public static final float MAXSPEED        = 2.4f * 360f;
-	public static final float SLOWSPEED       = 2f * 360f;
-	public static final double WHEELDIAMETER  = 3;
-	public static final double TRACKWIDTH     = 13;
-	
-	public static final long STOP_WAIT_TIME   = 1;
-	public static final long PARK_WAIT_TIME   = 5;
 	
 	// Color Signatures
 	// 		a signature is a 3 tuple representing the mean r, g, and b values for a color
@@ -23,9 +16,7 @@ public class RoboMap {
 	public static final float[] YELLOW_SIG = getSig("yellow");
 	public static final float[] RED_SIG    = getSig("red");
 	public static final float[] BLUE_SIG   = getSig("blue");
-	public static final float[] BLACK_SIG  = getSig("black");
-	
-	public static final double[] PARK_COUNTS  = {0, 686.5, 1378.0, 2114.5, 0};
+	public static final float[] BLACK_SIG  = getSig("black");	
 	
 	private static float[] getSig(String name) {
 		float r = RobotSettings.getFloatSetting(name+".r", 0);

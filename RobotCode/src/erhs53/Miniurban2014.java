@@ -65,19 +65,21 @@ public class Miniurban2014 {
 
 		TextMenu menu = new TextMenu(colors, 1, "Calibrate Color");
 		int index;
+		
 		while ((index = menu.select()) != -1) {
 			LCD.clear();
 			String name = colors[index];
 
-			int[] red = new int[5];
-			int[] green = new int[5];
-			int[] blue = new int[5];
+			int[] red = new int[8];
+			int[] green = new int[8];
+			int[] blue = new int[8];
 
 			Console.println("Config: " + name);
 			Button.waitForAnyPress();
 			Thread.sleep(1000);
-			for (int i = 0; i < 5; i++) {
-				Color color = robot.outerRightColor.getColor();
+			final ColorHTSensor[] sensors = new ColorHTSensor[]{ robot.outerRightColor, robot.innerRightColor, robot.innerLeftColor, robot.outerLeftColor};
+			for (int i = 0; i < 8; i++) {				
+				Color color = sensors[i % 4].getColor();
 				red[i] = color.getRed();
 				green[i] = color.getGreen();
 				blue[i] = color.getBlue();
@@ -129,7 +131,7 @@ public class Miniurban2014 {
 				break;
 			}
 			while (Button.readButtons() != Button.ID_ESCAPE) {
-				Color c = robot.outerRightColor.getColor();
+				Color c = robot.innerLeftColor.getColor();
 				int value = (int) (colorFunction.evaluateAve(c) * 100);
 
 				Console.println("Value: " + value);
@@ -167,9 +169,13 @@ public class Miniurban2014 {
 		}
 	}
 
-	private static void testFuzzyController() {
+	private static void testFuzzyController() throws InterruptedException {
 		FuzzyController controller = new FuzzyController(robot);
-		controller.followLine(Direction.right);
+		controller.followLine(Direction.left);
+		Thread.sleep(1000);
+		robot.turn(Direction.left, Direction.right);
+		controller.followLine(Direction.left);		
+		Thread.sleep(1000);
 	}
 
 	private static void testStepLoader() {
@@ -185,15 +191,12 @@ public class Miniurban2014 {
 		Button.waitForAnyPress();
 	}
 
-	public static void main(String[] args) throws InterruptedException {
-		//RConsole.openBluetooth(0);
-		
+	public static void main(String[] args) throws InterruptedException {	
 		robot = new Robot();
-
-		//TODO make connect Rconsole a menu item
+		
 		String[] items = new String[] { "Run program!", "Calibrate Sensors", "Calibrate Color",
 				"Test Color", "Test Raw Sensor", "Test Controller",
-				"Test Loader" };
+				"Test Loader", "Connect Console" };
 		TextMenu menu = new TextMenu(items, 1, "Miniurban 2014");
 
 		int option;
@@ -223,7 +226,12 @@ public class Miniurban2014 {
 			case 6:
 				testStepLoader();
 				break;
+			case 7:
+				RConsole.openBluetooth(0);
+				break;
 			}
 		} while (option != -1);
+		
 	}
+	
 }

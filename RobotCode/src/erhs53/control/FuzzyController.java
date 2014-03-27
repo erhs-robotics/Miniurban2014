@@ -14,11 +14,7 @@ public class FuzzyController {
 	
 	// ======================================================
 	// Variables
-	// ======================================================
-	
-	private static final float MAX_SPEED  = 600;
-	private static final float SLOW_SPEED = 370;
-	private static final float PARK_SPEED = 500;
+	// ======================================================	
 	private final Robot robot;
 	
 	
@@ -57,10 +53,10 @@ public class FuzzyController {
 		float out = 0;
 		
 		// if see black, turn towards line
-		out += -speed/5 * pBlack;		
+		out += -speed/4.5 * (1 - pWhite);		
 		
 		// if see white turn away from the line		
-		out +=  speed/3 * curve(pFollowColor);
+		out +=  speed/5 * pFollowColor;
 		
 		// if see green turn away from the line alot
 		//out +=  200 * greenMembership;
@@ -99,10 +95,15 @@ public class FuzzyController {
 	public void followLine(Direction dir) {
 		ColorHTSensor outerSensor = (dir == Direction.left) ? robot.outerLeftColor : robot.outerRightColor;
 		ColorHTSensor innerSensor = (dir == Direction.left) ? robot.innerLeftColor : robot.innerRightColor;
+		ColorHTSensor stopSensor = (dir == Direction.left) ? robot.innerRightColor : robot.innerLeftColor;
 		
-		while(true) {
-			follow(outerSensor, innerSensor, dir, MAX_SPEED);
+		while(ColorFilter.red.evaluateAve(stopSensor.getColor()) < 0.4f) {
+			follow(outerSensor, innerSensor, dir, Robot.MAX_SPEED);
 		}
+		//robot.leftMotor.setSpeed(0);
+		//robot.rightMotor.setSpeed(0);
+		robot.pilot.stop();	
+		
 	}
 	
 	// ======================================================
@@ -114,7 +115,7 @@ public class FuzzyController {
 		ColorHTSensor innerSensor = (dir == Direction.left) ? robot.innerLeftColor : robot.innerRightColor;
 		ColorFilter.Color searchColor = ColorFilter.Color.WHITE;
 		for(int i=0;i<space*2 - 2;) {
-			follow(innerSensor, null, dir, PARK_SPEED);
+			follow(innerSensor, null, dir, Robot.PARK_SPEED);
 			if(ColorFilter.classify(outerSensor.getColor()) == searchColor) {
 				i++;
 				searchColor = (searchColor == ColorFilter.Color.WHITE) ? 
