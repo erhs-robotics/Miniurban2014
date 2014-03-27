@@ -113,15 +113,15 @@ public class FuzzyController {
 	public void driveToSpace(int space, Direction dir) {
 		ColorHTSensor outerSensor = (dir == Direction.left) ? robot.outerLeftColor : robot.outerRightColor;
 		ColorHTSensor innerSensor = (dir == Direction.left) ? robot.innerLeftColor : robot.innerRightColor;
-		ColorFilter.Color searchColor = ColorFilter.Color.WHITE;
+		MembershipFunction searchColor = ColorFilter.white;
 		for(int i=0;i<space*2 - 2;) {
 			follow(innerSensor, null, dir, Robot.PARK_SPEED);
-			if(ColorFilter.classify(outerSensor.getColor()) == searchColor) {
+			if(searchColor.evaluateAve(outerSensor.getColor()) > 0.6) {
 				i++;
-				searchColor = (searchColor == ColorFilter.Color.WHITE) ? 
-								ColorFilter.Color.BLACK : ColorFilter.Color.WHITE;
+				searchColor = (searchColor == ColorFilter.white) ? 
+						ColorFilter.black : ColorFilter.white;
 			}
-			Console.println("" + i);			
+						
 		}
 		robot.leftMotor.setSpeed(0);
 		robot.rightMotor.setSpeed(0);

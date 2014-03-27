@@ -7,14 +7,6 @@ import erhs53.control.MembershipFunction.ComponentFunction;
 public class ColorFilter {
 	
 	// ======================================================
-	// Nested Types
-	// ======================================================
-	
-	public static enum Color {
-		WHITE, BLACK, BLUE, RED, GREEN, YELLOW, NONE
-	}
-	
-	// ======================================================
 	// Constants
 	// ======================================================
 	
@@ -23,6 +15,7 @@ public class ColorFilter {
 	public static final MembershipFunction yellow;
 	public static final MembershipFunction green;
 	public static final MembershipFunction blue;
+	public static final MembershipFunction black; // based only on (1 - white)!!
 	
 	// ======================================================
 	// Static Initializer
@@ -53,17 +46,19 @@ public class ColorFilter {
 		ComponentFunction blueG = new ComponentFunction(RoboMap.BLUE_SIG[1], RoboMap.BLACK_SIG[1]);
 		ComponentFunction blueB = new ComponentFunction(RoboMap.BLUE_SIG[2], RoboMap.BLACK_SIG[2]);
 		blue = new MembershipFunction(blueR, blueG, blueB);
+		
+		
+		black = new MembershipFunction(null, null, null) {
+			@Override
+			public float evaluateAve(lejos.robotics.Color color) {				
+				return 1 - white.evaluateAve(color);
+			}
+		};
 	}
 	
 	// ======================================================
 	// Class Logic
 	// ======================================================
 	
-	public static Color classify(lejos.robotics.Color color) {		
-		float whiteValue = white.evaluateAve(color);
-		float blackValue = 1 - MathUtils.max(whiteValue);
-		int i = MathUtils.argMax(whiteValue, blackValue);
-		return Color.values()[i];
 		
-	}	
 }
