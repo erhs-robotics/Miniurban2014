@@ -3,12 +3,11 @@ package erhs53.mapping.gui;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,10 +17,12 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import erhs53.mapping.*;
+import erhs53.mapping.Goal;
+import erhs53.mapping.Map;
 import erhs53.mapping.search.Action;
 import erhs53.mapping.search.Path;
 
@@ -38,6 +39,11 @@ public class MappingGUI extends JFrame {
 	
 	HashMap<String, Goal> goals;
 	HashMap<String, RoadPos> roads;
+	
+	Goal[] goalList;
+	JButton[] labels = new JButton[10];
+	
+	ArrayList<ArrayList<RoadPos>> paths = new ArrayList<ArrayList<RoadPos>>();
 	
 	Color[] colors = new Color[] {Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.pink};
 	int colorIndex = 0;
@@ -186,30 +192,85 @@ public class MappingGUI extends JFrame {
 		setVisible(true);
 	}
 	
+	private class LabelListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			sketchPath(Integer.parseInt(e.getActionCommand()));
+		}
+	}
+	
+	public void resetLabels() {
+		LabelListener ll = new LabelListener();
+		for(int i=0; i<labels.length; i++) {
+			labels[i] = new JButton();
+			labels[i].setVisible(false);
+			labels[i].setActionCommand(Integer.toString(i));
+			labels[i].addActionListener(ll);
+		}
+	}
+	
 	public void createGUI() {
+		JPanel labelPanel = new JPanel();
+		labelPanel.setLayout(new FlowLayout());
+		for(int i=0; i<labels.length; i++) {
+			labels[i] = new JButton();
+			labels[i].setVisible(false);
+			labels[i].setActionCommand(Integer.toString(i));
+			LabelListener ll = new LabelListener();
+			labels[i].addActionListener(ll);
+			labelPanel.add(labels[i]);
+		}
+		
 		controlPanel = new JPanel();
 		final JTextField goalsField = new JTextField(20);
 		JButton sketchButton = new JButton("Sketch Path");
 		sketchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String goalString = goalsField.getText();
-				Goal[] goalList = new Goal[goalString.split(", ").length];
+				goalList = new Goal[goalString.split(", ").length];
 				for(int i=0; i<goalList.length; i++) {
 					goalList[i] = goals.get(goalString.split(", ")[i]);
 					String g = goalString.split(", ")[i];
+					labels[i].setText(g);
+					labels[i].setVisible(true);
 					System.out.println(g);
 					goals.get(g).set(1, Map.PL);
 				}
 				System.out.println("Calculating path");
-				sketchPath(Map.generatePath(goalList));
+//				sketchPath(Map.generatePath(goalList));
+				loadPaths(Map.generatePath(goalList));
+				/*for(int i=0; i<paths.size(); i++) {
+					sketchPath(i);
+				}*/
+				sketchPath(-1);
 			}
 		});
 		controlPanel.add(goalsField);
 		controlPanel.add(sketchButton);
 		
 		this.setLayout(new BorderLayout());
+		this.add(labelPanel, BorderLayout.NORTH);
 		this.add(controlPanel, BorderLayout.SOUTH);
 		this.add(imagePanel, BorderLayout.CENTER);
+	}
+	
+	public void loadPaths(Path path) {
+		if(path == null) return;
+		for(Action a : path.actions) {
+			System.out.println(a.state.name);
+		}
+		int i = 0;
+		paths.add(new ArrayList<RoadPos>());
+		for(Action a: path.actions) {
+			System.out.print(a.state.name + ",");
+			if(a.state.name.startsWith("G")) {
+				i++;
+				paths.add(new ArrayList<RoadPos>());
+				continue;
+			}
+			else {
+				paths.get(i).add(roads.get(a.state.name));
+			}
+		}
 	}
 	
 	public void sketchPath(Path path) {
@@ -219,7 +280,7 @@ public class MappingGUI extends JFrame {
 		screenImage.getGraphics().drawImage(mapImage, 0, 0, null);
 		for(Action a : path.actions) {
 			System.out.print(a.state.name + ",");
-			if(a.state.name.startsWith("G")) {
+			if(a.state.name.startsWith("G") || a.state.name.equals("END")) {
 				colorIndex++;
 				screenImage.getGraphics().setColor(colors[colorIndex]);
 				continue;
@@ -228,8 +289,39 @@ public class MappingGUI extends JFrame {
 			Graphics2D g = (Graphics2D) screenImage.getGraphics();
 			g.setColor(colors[colorIndex]);
 			g.setStroke(new BasicStroke(3));
-			g.drawLine(rpos.startPos.x, rpos.startPos.y, rpos.endPos.x, rpos.endPos.y);
+			if(rpos == null) System.out.println("\nrpos is null");
+			/*for(int i=1; i<rpos.points.length; i++) {
+				g.drawLine(rpos.points[i-1].x, rpos.points[i-1].y, rpos.points[i].x, rpos.points[i-1].y);
+			}*/
+			g.drawLine(rpos.points[0].x, rpos.points[0].y, rpos.points[1].x, rpos.points[1].y);
 		}
 		System.out.println("Done");
 	}
+	
+	public void sketchPath(int path) {
+		System.out.println("Sketching paths[" + path + "]");
+		colorIndex = 0; 
+		screenImage.getGraphics().drawImage(mapImage, 0, 0, null);
+		Graphics2D g = (Graphics2D) screenImage.getGraphics();
+		g.setColor(colors[colorIndex]);
+		g.setStroke(new BasicStroke(3));
+		if(path == -1) {
+			for(int i=0; i<paths.size(); i++) {
+				for(int j=0; j<paths.get(i).size(); j++) {
+					RoadPos rpos = paths.get(i).get(j);
+					if(rpos == null) continue;
+					System.out.println(rpos.points[0] + ", " + rpos.points[1]);
+					g.drawLine(rpos.points[0].x, rpos.points[0].y, rpos.points[1].x, rpos.points[1].y);
+				}
+				colorIndex++;
+			}
+			return;
+		}
+		for(int i=0; i<paths.get(path).size(); i++) {
+			RoadPos rpos = paths.get(path).get(i);
+			if(rpos == null) continue;
+			System.out.println(rpos.points[0] + ", " + rpos.points[1]);
+			g.drawLine(rpos.points[0].x, rpos.points[0].y, rpos.points[1].x, rpos.points[1].y);
+		}
+	}	
 }
