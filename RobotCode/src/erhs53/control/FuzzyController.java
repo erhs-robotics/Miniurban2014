@@ -53,13 +53,14 @@ public class FuzzyController {
 		float out = 0;
 		
 		// if see black, turn towards line
-		out += -speed/4.5 * pBlack;
+		out += -speed/3.7 * pBlack;
 		
 		// if see white turn away from the line		
-		out +=  speed/6 * pFollowColor;
+		out +=  speed/3.7 * pFollowColor;
 		
 		// if see green turn away from the line alot
-		//out +=  200 * greenMembership;
+		if(pGreen > 0.7)
+			out = 200;
 		
 		
 		if(secondaryColor != null) {
@@ -69,10 +70,10 @@ public class FuzzyController {
 			sFollowColor = sFollowColor > 0.5 ? sFollowColor : 0;
 			
 			// if see white on the second color sensor, turn away alot alot
-			out += 300 * sFollowColor;
+			//out += 300 * sFollowColor;
 		}
 
-		return out;//3.75
+		return out;
 	}
 	
 	public void follow(ColorHTSensor outerSensor, ColorHTSensor innerSensor, Direction dir, float speed, boolean circle) {
@@ -106,35 +107,5 @@ public class FuzzyController {
 		//robot.rightMotor.setSpeed(0);
 		robot.pilot.stop();	
 		
-	}
-	
-	// ======================================================
-	// Parking Logic
-	// ======================================================
-	
-	public void driveToSpace(int space, Direction dir) {
-		ColorHTSensor outerSensor = (dir == Direction.left) ? robot.outerLeftColor : robot.outerRightColor;
-		ColorHTSensor innerSensor = (dir == Direction.left) ? robot.innerLeftColor : robot.innerRightColor;
-		MembershipFunction searchColor = ColorFilter.white;
-		for(int i=0;i<space*2 - 2;) {
-			follow(innerSensor, null, dir, Robot.PARK_SPEED, false);
-			if(searchColor.evaluateAve(outerSensor.getColor()) > 0.6) {
-				i++;
-				searchColor = (searchColor == ColorFilter.white) ? 
-						ColorFilter.black : ColorFilter.white;
-			}
-						
-		}
-		robot.leftMotor.setSpeed(0);
-		robot.rightMotor.setSpeed(0);
-		robot.leftMotor.stop();
-		robot.rightMotor.stop();	
-	}
-	
-	public void park(Direction dir) {
-		// Drive until there is a blue line
-		// Find the correct space
-		// Park in the space
-		// Reverse out of park
-		// drive to the end of the road
-	}}
+	}	
+}

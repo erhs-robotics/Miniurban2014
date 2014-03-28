@@ -1,8 +1,0 @@
-road,R0,0,false,false
-road,R2,1,false,false
-road,R4,2,false,false
-road,R5,2,false,false
-road,R6,1,false,false
-goal,G1,3,true
-road,R6,0,false,false
-goal,END,0,false
