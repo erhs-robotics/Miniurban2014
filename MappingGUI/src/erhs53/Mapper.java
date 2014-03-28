@@ -35,9 +35,9 @@ public class Mapper {
 	}
 
 	public static void main(String[] args) throws IOException {		
-		Map.G7.set(1, Map.PR);
+		Map.G1.set(3, Map.PL);
 
-		Path p = Map.generatePath(Map.G7);
+		Path p = Map.generatePath(Map.G1);
 		if (p == null) {
 			System.out.println("Failed");
 			return;

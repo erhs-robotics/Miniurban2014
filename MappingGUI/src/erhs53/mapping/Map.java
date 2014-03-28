@@ -115,7 +115,7 @@ public class Map {
 	// Every goal in the map
 	public static Goal START = new Goal("START", Map.R0);
 	public static Goal G1 = new Goal("G1", Map.R6);
-//	public static Goal END = new Goal("END", Map.AH0);
+	public static Goal END = new Goal("END", Map.R6);
 //	public static Goal G1 = new Goal("G1", Map.AH5);
 //	public static Goal G2 = new Goal("G2", Map.AH2);
 //	public static Goal G3 = new Goal("G3", Map.AH4);
