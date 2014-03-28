@@ -197,7 +197,7 @@ public class Map {
 		CV9.setActions(a(GS, CV4), a(TR, CH9));
 		CV10.setActions(a(GS, CV2));
 		
-		Goal.COST = generateCosts(G1, G2, G3, G4, G5, G6, G7, G9);
+		Goal.COST = generateCosts(G1, G2, G3, G4, G5, G6, G7, G8, G9);
 		
 	}
 	

@@ -34,16 +34,15 @@ public class Mapper {
 		fileOut.close();
 	}
 
-	public static void main(String[] args) throws IOException {
-		Map.G1.set(1, Map.PR);
-		Map.G2.set(1, Map.PL);
-		Map.G9.set(1, Map.PR);
+	public static void main(String[] args) throws IOException {		
+		Map.G7.set(1, Map.PR);
 
-		Path p = Map.generatePath(Map.G1, Map.G2, Map.G9);
+		Path p = Map.generatePath(Map.G7);
 		if (p == null) {
 			System.out.println("Failed");
 			return;
 		}
+		p.print();
 
 		writePath(p);
 	}
