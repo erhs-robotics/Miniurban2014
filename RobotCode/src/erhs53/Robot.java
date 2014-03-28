@@ -124,9 +124,7 @@ public class Robot {
 				GoalStep goalStep = (GoalStep) steps[i];
 				driveToSpace(goalStep.space, goalStep.direction);
 				enterPark(innerLeftColor, goalStep.direction);
-				exitPark(goalStep.direction);
-				
-				
+				exitPark(goalStep.direction);				
 			}
 		}
 	}
