@@ -46,36 +46,37 @@ public class FuzzyController {
 		float pBlue = ColorFilter.blue.evaluateAve(primaryColor);
 		float pRed = ColorFilter.red.evaluateAve(primaryColor);		
 		float pFollowColor = MathUtils.max(pWhite, pYellow, pBlue, pRed);
-		float pBlack = (1 - pFollowColor);		
+		float pBlack = pFollowColor < 0.35 ? (1 - pWhite) : (1 - pFollowColor);		
 		float pGreen = ColorFilter.green.evaluateAve(primaryColor);		
 		
 		// crisp output
 		float out = 0;
 		
 		// if see black, turn towards line
-		out += -speed/4.5 * (1 - pWhite);		
+		out += -speed/4.5 * pBlack;
 		
 		// if see white turn away from the line		
-		out +=  speed/5 * pFollowColor;
+		out +=  speed/6 * pFollowColor;
 		
 		// if see green turn away from the line alot
 		//out +=  200 * greenMembership;
 		
-		// if see white on the second color sensor, turn away alot alot
-		//out += 300 * innerFollowColor;
-		Console.println("" + pFollowColor);
 		
 		if(secondaryColor != null) {
 			float sWhite = ColorFilter.white.evaluateAve(secondaryColor);
 			float sYellow = ColorFilter.yellow.evaluateAve(secondaryColor);
 			float sFollowColor = MathUtils.max(sWhite, sYellow);
-			float innerBlack = (1 - sFollowColor);
+			sFollowColor = sFollowColor > 0.5 ? sFollowColor : 0;
+			
+			// if see white on the second color sensor, turn away alot alot
+			out += 300 * sFollowColor;
 		}
 
-		return out;
+		return out;//3.75
 	}
 	
-	public void follow(ColorHTSensor outerSensor, ColorHTSensor innerSensor, Direction dir, float speed) {
+	public void follow(ColorHTSensor outerSensor, ColorHTSensor innerSensor, Direction dir, float speed, boolean circle) {
+		float bias = circle ? 125 : 0;
 		double output;
 		if(innerSensor != null)
 			output = getOutput(outerSensor.getColor(), innerSensor.getColor(), speed);
@@ -85,20 +86,21 @@ public class FuzzyController {
 		
 		if(output == output) {// make sure output is a number
 			int sign = (dir == Direction.right) ? 1 : -1;
-			robot.leftMotor.setSpeed(speed - (float)output * sign);	
-			robot.rightMotor.setSpeed(speed + (float)output * sign);
+			robot.leftMotor.setSpeed(speed - (float)output * sign - bias);	
+			robot.rightMotor.setSpeed(speed + (float)output * sign + bias);
 		}
 		robot.leftMotor.forward();
 		robot.rightMotor.forward();
 	}
 	
-	public void followLine(Direction dir) {
+	public void followLine(Direction dir, boolean slow, boolean circle) {
 		ColorHTSensor outerSensor = (dir == Direction.left) ? robot.outerLeftColor : robot.outerRightColor;
 		ColorHTSensor innerSensor = (dir == Direction.left) ? robot.innerLeftColor : robot.innerRightColor;
 		ColorHTSensor stopSensor = (dir == Direction.left) ? robot.innerRightColor : robot.innerLeftColor;
+		float speed = slow ? Robot.SLOW_SPEED : Robot.MAX_SPEED;
 		
 		while(ColorFilter.red.evaluateAve(stopSensor.getColor()) < 0.4f) {
-			follow(outerSensor, innerSensor, dir, Robot.MAX_SPEED);
+			follow(outerSensor, innerSensor, dir, speed, circle);
 		}
 		//robot.leftMotor.setSpeed(0);
 		//robot.rightMotor.setSpeed(0);
@@ -115,7 +117,7 @@ public class FuzzyController {
 		ColorHTSensor innerSensor = (dir == Direction.left) ? robot.innerLeftColor : robot.innerRightColor;
 		MembershipFunction searchColor = ColorFilter.white;
 		for(int i=0;i<space*2 - 2;) {
-			follow(innerSensor, null, dir, Robot.PARK_SPEED);
+			follow(innerSensor, null, dir, Robot.PARK_SPEED, false);
 			if(searchColor.evaluateAve(outerSensor.getColor()) > 0.6) {
 				i++;
 				searchColor = (searchColor == ColorFilter.white) ? 

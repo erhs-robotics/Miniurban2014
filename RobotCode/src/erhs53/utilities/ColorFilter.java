@@ -1,5 +1,6 @@
 package erhs53.utilities;
 
+import lejos.robotics.Color;
 import erhs53.RoboMap;
 import erhs53.control.MembershipFunction;
 import erhs53.control.MembershipFunction.ComponentFunction;
@@ -48,9 +49,9 @@ public class ColorFilter {
 		blue = new MembershipFunction(blueR, blueG, blueB);
 		
 		
-		black = new MembershipFunction(null, null, null) {
+		black = new MembershipFunction() {
 			@Override
-			public float evaluateAve(lejos.robotics.Color color) {				
+			public float evaluateAve(Color color) {				
 				return 1 - white.evaluateAve(color);
 			}
 		};

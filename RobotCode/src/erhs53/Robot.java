@@ -22,14 +22,17 @@ public class Robot {
 	// Constants
 	// ======================================================
 	
-	public static final double WHEELDIAMETER  = 13;
-	public static final double TRACKWIDTH     = 55;
+	public static final double WHEELDIAMETER  = 3;
+	public static final double TRACKWIDTH     = 13.5;
 	public static final float MAX_SPEED  = 600;
 	public static final float SLOW_SPEED = 370;
 	public static final float PARK_SPEED = 500;
 	public static final float TURN_SPEED = 50; // In different units
-	public static final float NEAR_TURN_RADIUS = 40;
+	public static final float NEAR_TURN_TRAVEL_DISTANCE = 13;
+	public static final float FAR_TURN_TRAVEL_DISTANCE = 15;
 	public static final float FAR_TURN_RADIUS = 60;
+	public static final float TURN_ANGLE = 90;
+	public static final float CIRCLE_TURN_ANGLE = 70;
 	
 	
 	// ======================================================
@@ -94,17 +97,13 @@ public class Robot {
 		}		
 	}	
 	
-	public void turn(Direction dir, Direction side) {
-		ColorHTSensor sensor = side == Direction.left ? outerLeftColor : outerRightColor;
-		float turnRadius = dir.equals(side) ? NEAR_TURN_RADIUS : FAR_TURN_RADIUS;
-		Color c;
+	public void turn(Direction dir, Direction side, boolean circle) {		
+		float distance = dir == side ? NEAR_TURN_TRAVEL_DISTANCE : FAR_TURN_TRAVEL_DISTANCE;
+		float turn = circle ? CIRCLE_TURN_ANGLE : TURN_ANGLE;
+		float sign = dir == Direction.left ? 1 : -1;
 		pilot.setTravelSpeed(TURN_SPEED);
-		pilot.arcForward(turnRadius);
-		
-		do {
-			c = sensor.getColor();			
-		} while(ColorFilter.white.evaluateAve(c) > 0.6 && ColorFilter.yellow.evaluateAve(c) > 0.6);
-		
+		pilot.travel(distance);
+		pilot.rotate(turn * sign);		
 		pilot.stop();		
 	}
 	

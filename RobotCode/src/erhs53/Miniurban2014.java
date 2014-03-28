@@ -131,7 +131,7 @@ public class Miniurban2014 {
 				break;
 			}
 			while (Button.readButtons() != Button.ID_ESCAPE) {
-				Color c = robot.innerLeftColor.getColor();
+				Color c = robot.outerRightColor.getColor();
 				int value = (int) (colorFunction.evaluateAve(c) * 100);
 
 				Console.println("Value: " + value);
@@ -171,11 +171,14 @@ public class Miniurban2014 {
 
 	private static void testFuzzyController() throws InterruptedException {
 		FuzzyController controller = new FuzzyController(robot);
-		controller.followLine(Direction.left);
-		Thread.sleep(1000);
-		robot.turn(Direction.left, Direction.right);
-		controller.followLine(Direction.left);		
-		Thread.sleep(1000);
+		controller.followLine(Direction.left, false, false);
+		robot.turn(Direction.left, Direction.right, false);
+		controller.followLine(Direction.right, true, false);
+		robot.turn(Direction.right, Direction.right, true);
+		controller.followLine(Direction.right, true, true);
+		
+		
+		//Thread.sleep(1000);
 	}
 
 	private static void testStepLoader() {
