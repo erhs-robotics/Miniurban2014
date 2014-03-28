@@ -14,6 +14,7 @@ import lejos.nxt.addon.ColorHTSensor;
 import lejos.nxt.comm.RConsole;
 import lejos.robotics.Color;
 import lejos.util.TextMenu;
+import erhs53.Robot.TurnType;
 import erhs53.control.FuzzyController;
 import erhs53.control.MembershipFunction;
 import erhs53.mapping.Step;
@@ -77,9 +78,11 @@ public class Miniurban2014 {
 			Console.println("Config: " + name);
 			Button.waitForAnyPress();
 			Thread.sleep(1000);
-			final ColorHTSensor[] sensors = new ColorHTSensor[]{ robot.outerRightColor, robot.innerRightColor, robot.innerLeftColor, robot.outerLeftColor};
+			final ColorHTSensor[] outerSensors = new ColorHTSensor[]{robot.outerRightColor, robot.outerLeftColor};
+			final ColorHTSensor[] innerSensors = new ColorHTSensor[]{robot.innerRightColor, robot.innerLeftColor};
+			ColorHTSensor[] sensors = index == 3 || index == 4 ? innerSensors: outerSensors;
 			for (int i = 0; i < 8; i++) {				
-				Color color = sensors[i % 4].getColor();
+				Color color = sensors[i % 2].getColor();
 				red[i] = color.getRed();
 				green[i] = color.getGreen();
 				blue[i] = color.getBlue();
@@ -131,7 +134,7 @@ public class Miniurban2014 {
 				break;
 			}
 			while (Button.readButtons() != Button.ID_ESCAPE) {
-				Color c = robot.outerRightColor.getColor();
+				Color c = robot.innerRightColor.getColor();
 				int value = (int) (colorFunction.evaluateAve(c) * 100);
 
 				Console.println("Value: " + value);
@@ -170,15 +173,19 @@ public class Miniurban2014 {
 	}
 
 	private static void testFuzzyController() throws InterruptedException {
-		FuzzyController controller = new FuzzyController(robot);
-		controller.followLine(Direction.left, false, false);
-		robot.turn(Direction.left, Direction.right, false);
-		controller.followLine(Direction.right, true, false);
-		robot.turn(Direction.right, Direction.right, true);
-		controller.followLine(Direction.right, true, true);
+		robot.controller.followLine(Direction.left, false, false);
+		robot.turn(Direction.left, TurnType.normal);
+		robot.controller.followLine(Direction.right, true, false);
+		robot.turn(Direction.right, TurnType.ontoCircle);
+		robot.controller.followLine(Direction.right, true, true);
+		robot.turn(Direction.right, TurnType.offCircle);
+		robot.controller.followLine(Direction.left, true, false);
+		robot.turn(Direction.left, TurnType.normal);
+		robot.driveToSpace(3, Direction.left);
+		robot.enterPark(robot.innerLeftColor, Direction.left);
+		robot.exitPark(Direction.left);	
 		
 		
-		//Thread.sleep(1000);
 	}
 
 	private static void testStepLoader() {

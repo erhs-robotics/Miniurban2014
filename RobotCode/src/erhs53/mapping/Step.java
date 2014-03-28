@@ -47,7 +47,8 @@ public abstract class Step{
 				String name = parts[1];
 				int space = Integer.parseInt(parts[2]);
 				boolean left = Boolean.parseBoolean(parts[3]);
-				steps.add(new GoalStep(name, space, left));
+				Direction dir = left ? Direction.left : Direction.right;
+				steps.add(new GoalStep(name, space, dir));
 			} else {
 				System.out.println("Error reading map!");
 			}			
