@@ -91,23 +91,23 @@ public class Miniurban2014 {
 				Thread.sleep(1000);
 			}
 
-			String meanRed = "" + MathUtils.mean(red);
-			String meanGreen = "" + MathUtils.mean(green);
-			String meanBlue = "" + MathUtils.mean(blue);
+			float meanRed = MathUtils.mean(red);
+			float meanGreen = MathUtils.mean(green);
+			float meanBlue = MathUtils.mean(blue);
 			RobotSettings.setSetting(name + ".r", meanRed);
 			RobotSettings.setSetting(name + ".g", meanGreen);
 			RobotSettings.setSetting(name + ".b", meanBlue);
-			Console.println("Calibrated " + name);
+			Console.println("Calibrated " + name);			
 			Thread.sleep(1000);
 		}
 
+		RobotSettings.writeSettings();
 		Console.println("Calibration Successful");
-		Console.println("System must now reboot...");
-		Console.println("Press any key");
+		Thread.sleep(1000);
 		Button.waitForAnyPress();
 	}
 
-	private static void testColorDetection() {
+	private static void testColorDetection() {		
 		String[] colors = new String[] { "white", "green", "blue",
 				"red", "yellow"};
 
@@ -223,7 +223,7 @@ public class Miniurban2014 {
 				break;
 			case 2:
 				calibrateColors();
-				return;
+				break;
 			case 3:
 				testColorDetection();
 				break;

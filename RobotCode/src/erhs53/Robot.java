@@ -11,6 +11,7 @@ import erhs53.mapping.RoadStep.Direction;
 import erhs53.mapping.Step;
 import erhs53.utilities.ColorFilter;
 import erhs53.utilities.ColorHTSensorX;
+import erhs53.utilities.Console;
 import erhs53.utilities.MovingAverage;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
@@ -97,34 +98,44 @@ public class Robot {
 	}
 
 	public void followSteps(Step[] steps) {
-		
-		for (int i = 0; i < steps.length; i++) {
+
+		for (int i = 0; i < steps.length - 1; i++) {
 			if (steps[i] instanceof RoadStep) {
 				RoadStep roadStep = (RoadStep) steps[i];
-				TurnType type = null;
-				if(i > 0 && steps[i - 1] instanceof RoadStep) {
-					RoadStep lastStep = (RoadStep) steps[i - 1];
-					if(lastStep.circle && roadStep.circle) {
+				RoadStep lastStep = (i > 0 && steps[i - 1] instanceof RoadStep) ? (RoadStep) steps[i]
+						: null;
+				if (lastStep != null) {
+					TurnType type;
+
+					if (lastStep.circle && roadStep.circle) {
 						type = TurnType.stayOnCircle;
-					} else {
+						Console.println("Stay on circle");
+					} else if (lastStep.circle && !roadStep.circle) {
 						type = TurnType.offCircle;
+						Console.println("turning off circle");
+					} else if (roadStep.circle) {
+						type = TurnType.ontoCircle;
+						Console.println("turning into circle");
+					} else {
+						type = TurnType.normal;
+						Console.println("Normal turn");
 					}
-					
-				} else if(roadStep.circle) {
-					type = TurnType.ontoCircle;
-				} else {
-					type = TurnType.normal;
-				}
-				if(i > 0 && steps[i - 1] instanceof RoadStep) {
+					Console.println("Turning " + roadStep.direction.toString());
 					turn(roadStep.direction, type);
 				}
-				controller.followLine(roadStep.direction, roadStep.slow, roadStep.circle);
-				
+
+				Step nextStep = steps[i + 1];
+
+				Direction dir = nextStep.direction == Direction.straight ? Direction.left
+						: nextStep.direction;
+				Console.println("Following " + dir);
+				controller.followLine(dir, roadStep.slow, roadStep.circle);
+
 			} else if (steps[i] instanceof GoalStep) {
 				GoalStep goalStep = (GoalStep) steps[i];
 				driveToSpace(goalStep.space, goalStep.direction);
 				enterPark(innerLeftColor, goalStep.direction);
-				exitPark(goalStep.direction);				
+				exitPark(goalStep.direction);
 			}
 		}
 	}
@@ -147,10 +158,10 @@ public class Robot {
 		ColorHTSensor innerSensor = (dir == Direction.left) ? innerLeftColor
 				: innerRightColor;
 		// drive until blue
-		while(ColorFilter.blue.evaluateAve(innerSensor.getColor()) < 0.6) {
+		while (ColorFilter.blue.evaluateAve(innerSensor.getColor()) < 0.6) {
 			controller.follow(innerSensor, null, dir, Robot.PARK_SPEED, false);
-		}		
-		
+		}
+
 		MembershipFunction searchColor = ColorFilter.black;
 		MovingAverage filter = new MovingAverage(3);
 		for (int i = 0; i < space * 2 - 1;) {
@@ -177,26 +188,26 @@ public class Robot {
 		}
 		pilot.setTravelSpeed(10);
 		ColorHTSensor outerSensor;
-		if(dir == Direction.left) {
+		if (dir == Direction.left) {
 			pilot.arcForward(2);
 			outerSensor = outerLeftColor;
 		} else {
 			pilot.arcForward(-2);
 			outerSensor = outerRightColor;
 		}
-		
-		while(ColorFilter.white.evaluateAve(outerSensor.getColor()) < 0.5) {			
+
+		while (ColorFilter.white.evaluateAve(outerSensor.getColor()) < 0.5) {
 		}
-		
+
 		pilot.stop();
-		
-		while(ColorFilter.white.evaluateAve(sensor.getColor()) < 0.5) {			
+
+		while (ColorFilter.white.evaluateAve(sensor.getColor()) < 0.5) {
 			controller.follow(outerSensor, null, dir, Robot.PARK_SPEED, false);
 		}
-		
+
 		pilot.stop();
 	}
-	
+
 	public void exitPark(Direction dir) {
 		int sign = dir == Direction.left ? -1 : 1;
 		pilot.travel(-24);

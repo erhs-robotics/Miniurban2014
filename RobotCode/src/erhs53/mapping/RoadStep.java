@@ -4,8 +4,7 @@ public class RoadStep extends Step {
 	
 	public static enum Direction { none, left, right, straight }
 	public final boolean slow;
-	public final boolean circle;
-	public final Direction direction;
+	public final boolean circle;	
 	
 	
 	public RoadStep(String name, Direction direction, boolean slow, boolean circle) {
@@ -13,6 +12,7 @@ public class RoadStep extends Step {
 		this.slow = slow;
 		this.circle = circle;
 		this.direction = direction;
+		
 	}
 
 }

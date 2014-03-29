@@ -35,7 +35,7 @@ public class Mapper {
 	}
 
 	public static void main(String[] args) throws IOException {
-		Map.G1.set(3, Map.PL);
+		Map.G1.set(2, Map.PL);
 
 		Path p = Map.generatePath(Map.G1);
 

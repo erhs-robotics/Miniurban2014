@@ -19,9 +19,9 @@ public class RoboMap {
 	public static final float[] BLACK_SIG  = getSig("black");	
 	
 	private static float[] getSig(String name) {
-		float r = RobotSettings.getFloatSetting(name+".r", 0);
-		float g = RobotSettings.getFloatSetting(name+".g", 0);
-		float b = RobotSettings.getFloatSetting(name+".b", 0);
+		float r = RobotSettings.getSetting(name+".r");
+		float g = RobotSettings.getSetting(name+".g");
+		float b = RobotSettings.getSetting(name+".b");
 		
 		return new float[]{r, g, b};
 	}

@@ -12,6 +12,7 @@ import erhs53.utilities.StringUtils;
 
 public abstract class Step{
 	public String name;
+	public Direction direction;
 	
 	public static final Step[] loadSteps(String file) throws IOException {
 		LinkedList<Step> steps = new LinkedList<>();

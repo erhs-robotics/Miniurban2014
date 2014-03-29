@@ -102,9 +102,9 @@ public class Map {
 					   R0 = new Road("R0", 40),
 			           R1 = new Road("R1", 35),
 			           R2 = new Road("R2", 20),
-			           R3 = new Road("R3", 3.141592654 * 50),
-			           R4 = new Road("R4", 3.141592654 * 50),
-			           R5 = new Road("R5", 15),
+			           R3 = new Road("R3", 3.141592654 * 50, true, true),
+			           R4 = new Road("R4", 3.141592654 * 50, true, true),
+			           R5 = new Road("R5", 15, true, false),
 			           R6 = new Road("R6", 65),
 			           R7 = new Road("R7", 25);
 							 

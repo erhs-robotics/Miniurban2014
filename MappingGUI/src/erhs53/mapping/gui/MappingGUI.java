@@ -54,14 +54,14 @@ public class MappingGUI extends JFrame {
 		
 		goals = new HashMap<>();
 		goals.put("G1", Map.G1);
-		goals.put("G2", Map.G2);
-		goals.put("G3", Map.G3);
-		goals.put("G4", Map.G4);
-		goals.put("G5", Map.G5);
-		goals.put("G6", Map.G6);
-		goals.put("G7", Map.G7);
-		goals.put("G8", Map.G8);
-		goals.put("G9", Map.G9);
+		//goals.put("G2", Map.G2);
+		//goals.put("G3", Map.G3);
+		//goals.put("G4", Map.G4);
+		//goals.put("G5", Map.G5);
+		//goals.put("G6", Map.G6);
+		//goals.put("G7", Map.G7);
+		//goals.put("G8", Map.G8);
+		//goals.put("G9", Map.G9);
 		
 		roads = new HashMap<>();
 		roads.put("AH0", RoadPos.AH0);
