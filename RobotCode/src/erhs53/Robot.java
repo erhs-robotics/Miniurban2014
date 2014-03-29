@@ -140,9 +140,7 @@ public class Robot {
 
 			} else if (steps[i] instanceof GoalStep) {
 				GoalStep goalStep = (GoalStep) steps[i];
-				driveToSpace(goalStep.space, goalStep.direction);
-				enterPark(innerLeftColor, goalStep.direction);
-				exitPark(goalStep.direction);
+				park(goalStep.space, goalStep.direction);
 			}
 		}
 		turn(Direction.straight, TurnType.straight);
@@ -198,6 +196,7 @@ public class Robot {
 	}
 
 	public void enterPark(ColorHTSensor sensor, Direction dir) {
+		
 		double tacho = aveTachoCount();
 		while (aveTachoCount() - tacho < 250) {
 			controller.follow(sensor, null, dir, Robot.PARK_SPEED, false);
@@ -230,12 +229,13 @@ public class Robot {
 		pilot.rotate(100 * sign);
 	}
 
-	public void park(Direction dir) {
-		// Drive until there is a blue line
-		// Find the correct space
-		// Park in the space
-		// Reverse out of park
-		// drive to the end of the road
+	public void park(int space, Direction direction) {		
+		ColorHTSensor sensor = (direction == Direction.left) ? innerLeftColor
+				: innerRightColor;
+		
+		driveToSpace(space, direction);
+		enterPark(sensor, direction);
+		exitPark(direction);
 	}
 
 	// ======================================================
