@@ -22,9 +22,9 @@ import lejos.robotics.navigation.DifferentialPilot;
 public class Robot {
 
 	public enum TurnType {
-		normal, ontoCircle, stayOnCircle, offCircle;
-		private static final float[] angles = new float[] { 90, 70, 56.5f, 50 };
-		private static final float[] dists = new float[] { 14, 14, 15, 21 };
+		normal, straight, ontoCircle, stayOnCircle, offCircle;
+		private static final float[] angles = new float[] { 90, 0, 70, 56.5f, 50 };
+		private static final float[] dists = new float[] { 14, 20, 14, 15, 21 };
 
 		public float getAngle() {
 			return angles[this.ordinal()];
@@ -98,8 +98,12 @@ public class Robot {
 	}
 
 	public void followSteps(Step[] steps) {
+		
+		// move out of the initial position
+		controller.followLine(Direction.left, false, false);
+		turn(Direction.left, TurnType.normal);
 
-		for (int i = 0; i < steps.length - 1; i++) {
+		for (int i = 0; i < steps.length - 2; i++) {
 			if (steps[i] instanceof RoadStep) {
 				RoadStep roadStep = (RoadStep) steps[i];
 				RoadStep lastStep = (i > 0 && steps[i - 1] instanceof RoadStep) ? (RoadStep) steps[i]
@@ -116,6 +120,9 @@ public class Robot {
 					} else if (roadStep.circle) {
 						type = TurnType.ontoCircle;
 						Console.println("turning into circle");
+					} else if (roadStep.direction == Direction.straight){
+						type = TurnType.straight;
+						Console.println("Going straight");
 					} else {
 						type = TurnType.normal;
 						Console.println("Normal turn");
@@ -138,6 +145,14 @@ public class Robot {
 				exitPark(goalStep.direction);
 			}
 		}
+		// Park back in the entry point
+		while(ColorFilter.red.evaluateAve(outerLeftColor.getColor()) < 0.5) {
+			controller.follow(outerLeftColor, innerLeftColor, Direction.left, PARK_SPEED, false);
+		}
+		enterPark(outerLeftColor, Direction.left); // TODO: CHECK TO MAKE SURE THAT WILL TURN CORRECTLY
+		pilot.stop();
+		
+		
 	}
 
 	public void turn(Direction dir, TurnType turnType) {
