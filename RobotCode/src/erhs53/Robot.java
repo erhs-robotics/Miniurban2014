@@ -145,6 +145,7 @@ public class Robot {
 				exitPark(goalStep.direction);
 			}
 		}
+		turn(Direction.straight, TurnType.straight);
 		// Park back in the entry point
 		while(ColorFilter.red.evaluateAve(outerLeftColor.getColor()) < 0.5) {
 			controller.follow(outerLeftColor, innerLeftColor, Direction.left, PARK_SPEED, false);
